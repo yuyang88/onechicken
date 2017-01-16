@@ -81,8 +81,25 @@ class token_model extends CI_Model
     }
     
     
-    /**/
 
+    /**
+     * 调取微信分享token
+     * @return mixed
+     */
+    public function getToken()
+    {
+
+
+        return $this->db->where('valid_time > ',time())->get($this->table_token)->result_array();
+    }
+
+    /**
+     * 设置微信分享token
+     */
+    public function setToken()
+    {
+        $this->getWeChatSignature();
+    }
 
     /**
      * 微信 access_token 数据
@@ -131,16 +148,7 @@ class token_model extends CI_Model
         return $this->db->where('valid_time > ',time())->get($this->table_token)->result_array();
     }
 
-    public function getToken()
-    {
 
-
-        return $this->db->where('valid_time > ',time())->get($this->table_token)->result_array();
-    }
-    public function setToken()
-    {
-        $this->getWeChatOpenId();
-    }
     
     public function saveData($obj)
     {
