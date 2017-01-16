@@ -4,11 +4,25 @@
  * User: hemuhan
  * Date: 17/1/16
  * Time: 上午10:48
+ * @property $user_model user_model
  */
 
 
-class Api extends CI_Controller    {
+class Api extends MY_Controller {
+    /**
+     * 获取用户信息
+     */
     public function info(){
+        $this->load->model("user_model");
+        $userinfo = $this->user_model->userinfo($this->get_userid());
+
+        $this->send_data(true,$userinfo,"获取信息成功");
+    }
+
+    /**
+     * 获取最新的提示消息
+     */
+    public function messages(){
 
     }
 
@@ -35,7 +49,5 @@ class Api extends CI_Controller    {
         $a = $this->token_model->getWeChatSignature();
         var_dump($a);
     }
-
-
 
 }

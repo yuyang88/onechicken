@@ -9,4 +9,33 @@
 
 class MY_Controller extends CI_Controller {
     protected $userinfo;
+
+
+    protected function get_userid(){
+        if(ENVIRONMENT == 'test'){
+            return 1;
+        }else{
+            return $_POST['userid'];
+        }
+
+    }
+
+    /**
+     * 发送给前端的数据信息
+     * @param $status
+     * @param $data
+     * @param $msg
+     * @return string
+     */
+    protected function send_data($status,$data,$msg){
+        $this->output->set_content_type('application/javascript', 'UTF-8');
+        $result = json_encode([
+            "status"=>$status,
+            "data"=>$data,
+            "msg"=>$msg
+        ]);
+        die($result);
+    }
+
+
 }
