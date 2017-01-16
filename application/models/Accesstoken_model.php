@@ -6,8 +6,9 @@
  * Time: 12:37
  * @description 微信分享access_token 数据
  */
-class Accesstoken_model extends Base_model
+class Accesstoken_model extends CI_Model
 {
+    private $table_token = 'wechat_token';
     public function __construct()
     {
         parent::__construct();
@@ -18,16 +19,22 @@ class Accesstoken_model extends Base_model
     public function getData(){
 
 
-        return $this->db->get('test')->result_array();
+        return $this->db->get($this->table_token)->result_array();
     }
 
-    public function setData()
+    public function setData($obj)
+    {
+        return $this->db->set($obj)->insert($this->table_token);
+    }
+
+    public function data($arr)
     {
         $obj = new stdClass();
-        $obj->access_token = '111';
-        $obj->signature = '111';
+        foreach ($arr as $key=>$value)
+        {
+            $obj->$key = $value;
+        }
 
-        $obj = ['access_token' => 222,'signature'=>222];
-        return $this->db->set($obj)->insert('test');
+        return $obj;
     }
 }
