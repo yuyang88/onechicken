@@ -26,4 +26,9 @@ class Topup_model extends CI_Model
     {
         return $this->db->query($sql);
     }
+
+    public function querySql($sql)
+    {
+        return $this->db->query($sql)->result_array();
+    }
 }

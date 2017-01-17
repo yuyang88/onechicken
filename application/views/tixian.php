@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <link rel="icon" href="">
-    <title>APP端登录日志管理</title>
+    <title>提现管理</title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" type="text/css" href="http://localhost/onechicken/public/public/Css/admin/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="http://localhost/onechicken/public/public/Css/jquery-ui.min.css" />
@@ -77,60 +77,21 @@
                 <li class="">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown">后台管理 <span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="/dashboard/admin/index.html">用户信息</a></li>
-                        <li><a href="/dashboard/admin/addadmin.html">提现管理</a></li>
+                        <li><a href="http://localhost/onechicken/index.php/admin/show">用户信息</a></li>
+                        <li><a href="http://localhost/onechicken/index.php/admin/tixian">提现管理</a></li>
                     </ul>
                 </li>
-<!--                <li class="">-->
-<!--                    <a href="" class="dropdown-toggle" data-toggle="dropdown">系统日志<span class="caret"></span></a>-->
-<!--                    <ul class="dropdown-menu" role="menu">-->
-<!--                        <li><a href="/dashboard/login_log/chiefLog.html">工长日志管理</a></li>-->
-<!--                        <li><a href="/dashboard/login_log/ownerLog.html">用户日志管理</a></li>-->
-<!--                    </ul>-->
-<!--                </li>-->
-<!--                <li class="">-->
-<!--                    <a href="" class="dropdown-toggle" data-toggle="dropdown">工长端推送<span class="caret"></span></a>-->
-<!--                    <ul class="dropdown-menu" role="menu">-->
-<!--                        <li><a href="/dashboard/b_push/index.html">推送管理</a></li>-->
-<!--                        <li><a href="/dashboard/b_push/add.html">添加推送</a></li>-->
-<!--                    </ul>-->
-<!--                </li>-->
-<!--                <li class="">-->
-<!--                    <a href="/dashboard/lottery/index.html" class="dropdown-toggle" >抽奖管理</a>-->
-<!--                </li>-->
-<!--                <li class="">-->
-<!--                    <a href="#" class="dropdown-toggle" >聊天记录</a>-->
-<!--                </li>-->
-<!--                <li class="">-->
-<!--                    <a href="" class="dropdown-toggle" data-toggle="dropdown">后台控制<span class="caret"></span></a>-->
-<!--                    <ul class="dropdown-menu" role="menu">-->
-<!--                        <li><a href="/dashboard/contro/add.html">新增焦点图</a></li>-->
-<!--                        <li><a href="/dashboard/contro/index.html">焦点图首页</a></li>-->
-<!--                        <li><a href="/dashboard/icon/index.html">标签控制</a></li>-->
-<!--                        <li><a href="/dashboard/icon/add.html">新增标签</a></li>-->
-<!--                        <li><a href="/dashboard/activity/add.html">新建签到活动</a></li>-->
-<!--                        <li><a href="/dashboard/activity/index.html">签到活动管理</a></li>-->
-<!--                        <li><a href="/dashboard/consult/index.html">工地参谋</a></li>-->
-<!--                        <li><a href="/dashboard/suggest_complain/index.html">投诉建议</a></li>-->
-<!--                    </ul>-->
-<!--                </li>-->
-<!--                <li class="">-->
-<!--                    <a href="" class="dropdown-toggle" data-toggle="dropdown">业主端推送<span class="caret"></span></a>-->
-<!--                    <ul class="dropdown-menu" role="menu">-->
-<!--                        <li><a href="/dashboard/c_push/index.html">推送管理</a></li>-->
-<!--                        <li><a href="/dashboard/c_push/add.html">添加推送</a></li>-->
-<!--                    </ul>-->
-<!--                </li>-->
+
             </ul>
             <ul class="nav navbar-nav" style="float:right;">
                 <li class="">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">凹凸曼<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $_COOKIE['email']?><span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu" style="right:0; left:auto;">
-                        <li><a>凹凸曼</a></li>
+                        <li><a><?php echo $_COOKIE['email']?></a></li>
                         <!--<li><a href="#">上次登录时间：</a></li>--->
                         <li class="divider"></li>
                         <!--<li><a href="/dashboard/system/updateAdminPwd.html">修改我的密码</a></li>-->
-                        <li><a href="/dashboard/index/logout.html">退出登录</a></li>
+                        <li><a href="http://localhost/onechicken/index.php/admin/logout">退出登录</a></li>
                     </ul>
                 </li>
             </ul>
@@ -151,22 +112,12 @@
 <!--                        | <a href="/dashboard/index/getUserInfo/city/ha.html">哈尔滨</a>| <a href="/dashboard/index/getUserInfo/city/cc.html">长春</a>| <a href="/dashboard/index/getUserInfo/city/jl.html">吉林</a>| <a href="/dashboard/index/getUserInfo/city/sy.html">沈阳</a>| <a href="/dashboard/index/getUserInfo/city/dl.html">大连</a>| <a href="/dashboard/index/getUserInfo/city/bj.html">北京</a>| <a href="/dashboard/index/getUserInfo/city/tj.html">天津</a>| <a href="/dashboard/index/getUserInfo/city/sj.html">石家庄</a>| <a href="/dashboard/index/getUserInfo/city/bd.html">保定</a>| <a href="/dashboard/index/getUserInfo/city/qi.html">秦皇岛</a>| <a href="/dashboard/index/getUserInfo/city/ty.html">太原</a>| <a href="/dashboard/index/getUserInfo/city/jc.html">晋城</a>| <a href="/dashboard/index/getUserInfo/city/hu.html">呼和浩特</a>| <a href="/dashboard/index/getUserInfo/city/sh.html">上海</a>| <a href="/dashboard/index/getUserInfo/city/nj.html">南京</a>| <a href="/dashboard/index/getUserInfo/city/cz.html">常州</a>| <a href="/dashboard/index/getUserInfo/city/su.html">苏州</a>| <a href="/dashboard/index/getUserInfo/city/wx.html">无锡</a>| <a href="/dashboard/index/getUserInfo/city/yd.html">扬州</a>| <a href="/dashboard/index/getUserInfo/city/xz.html">徐州</a>| <a href="/dashboard/index/getUserInfo/city/nt.html">南通</a>| <a href="/dashboard/index/getUserInfo/city/hz.html">杭州</a>| <a href="/dashboard/index/getUserInfo/city/nb.html">宁波</a>| <a href="/dashboard/index/getUserInfo/city/so.html">绍兴</a>| <a href="/dashboard/index/getUserInfo/city/hf.html">合肥</a>| <a href="/dashboard/index/getUserInfo/city/xm.html">厦门</a>| <a href="/dashboard/index/getUserInfo/city/qz.html">泉州</a>| <a href="/dashboard/index/getUserInfo/city/nc.html">南昌</a>| <a href="/dashboard/index/getUserInfo/city/sd.html">济南</a>| <a href="/dashboard/index/getUserInfo/city/qd.html">青岛</a>| <a href="/dashboard/index/getUserInfo/city/zb.html">淄博</a>| <a href="/dashboard/index/getUserInfo/city/yt.html">烟台</a>| <a href="/dashboard/index/getUserInfo/city/hn.html">郑州</a>| <a href="/dashboard/index/getUserInfo/city/ly.html">洛阳</a>| <a href="/dashboard/index/getUserInfo/city/wh.html">武汉</a>| <a href="/dashboard/index/getUserInfo/city/cs.html">长沙</a>| <a href="/dashboard/index/getUserInfo/city/gz.html">广州</a>| <a href="/dashboard/index/getUserInfo/city/sz.html">深圳</a>| <a href="/dashboard/index/getUserInfo/city/dg.html">东莞</a>| <a href="/dashboard/index/getUserInfo/city/zs.html">中山</a>| <a href="/dashboard/index/getUserInfo/city/fs.html">佛山</a>| <a href="/dashboard/index/getUserInfo/city/zh.html">珠海</a>| <a href="/dashboard/index/getUserInfo/city/nn.html">南宁</a>| <a href="/dashboard/index/getUserInfo/city/la.html">柳州</a>| <a href="/dashboard/index/getUserInfo/city/hk.html">海口</a>| <a href="/dashboard/index/getUserInfo/city/cq.html">重庆</a>| <a href="/dashboard/index/getUserInfo/city/cd.html">成都</a>| <a href="/dashboard/index/getUserInfo/city/gy.html">贵阳</a>| <a href="/dashboard/index/getUserInfo/city/yn.html">昆明</a>| <a href="/dashboard/index/getUserInfo/city/sx.html">西安</a>| <a href="/dashboard/index/getUserInfo/city/xy.html">咸阳</a>| <a href="/dashboard/index/getUserInfo/city/xj.html">乌鲁木齐</a>| <a href="/dashboard/index/getUserInfo/city/dyd.html">钓鱼岛</a>| <a href="/dashboard/index/getUserInfo/city/jy.html">江阴</a>| <a href="/dashboard/index/getUserInfo/city/tb.html">泰州</a>| <a href="/dashboard/index/getUserInfo/city/dy.html">东营</a>| <a href="/dashboard/index/getUserInfo/city/my.html">绵阳</a>| <a href="/dashboard/index/getUserInfo/city/ny.html">南阳</a>| <a href="/dashboard/index/getUserInfo/city/jn.html">济宁</a>| <a href="/dashboard/index/getUserInfo/city/hp.html">衡水</a>| <a href="/dashboard/index/getUserInfo/city/fy.html">阜阳</a>| <a href="/dashboard/index/getUserInfo/city/ks.html">昆山</a>| <a href="/dashboard/index/getUserInfo/city/ji.html">焦作</a>| <a href="/dashboard/index/getUserInfo/city/hj.html">淮安</a>| <a href="/dashboard/index/getUserInfo/city/zk.html">周口</a>| <a href="/dashboard/index/getUserInfo/city/co.html">沧州</a>| <a href="/dashboard/index/getUserInfo/city/hv.html">惠州</a>| <a href="/dashboard/index/getUserInfo/city/jh.html">金华</a>| <a href="/dashboard/index/getUserInfo/city/we.html">威海</a>| <a href="/dashboard/index/getUserInfo/city/xa.html">邢台</a>| <a href="/dashboard/index/getUserInfo/city/si.html">十堰</a>| <a href="/dashboard/index/getUserInfo/city/zy.html">遵义</a>| <a href="/dashboard/index/getUserInfo/city/yv.html">岳阳</a>| <a href="/dashboard/index/getUserInfo/city/kl.html">凯里</a>| <a href="/dashboard/index/getUserInfo/city/ln.html">临汾</a>| <a href="/dashboard/index/getUserInfo/city/ho.html">湖州</a>| <a href="/dashboard/index/getUserInfo/city/ce.html">承德</a>| <a href="/dashboard/index/getUserInfo/city/zo.html">漳州</a>| <a href="/dashboard/index/getUserInfo/city/na.html">南充</a>| <a href="/dashboard/index/getUserInfo/city/zg.html">自贡</a>| <a href="/dashboard/index/getUserInfo/city/rx.html">任县</a>| <a href="/dashboard/index/getUserInfo/city/gu.html">固始</a>| <a href="/dashboard/index/getUserInfo/city/yl.html">玉林</a>| <a href="/dashboard/index/getUserInfo/city/qg.html">庆阳</a>| <a href="/dashboard/index/getUserInfo/city/yb.html">宜宾</a>                    </p>-->
 <!--                </span>-->
 <!--        </li>        </ol>-->
-<!--    <ol class="breadcrumb">-->
-<!--        <li>当前路径：</li>-->
-<!--        <li> <a href="/dashboard/login_log/ownerLog.html" title="用户登录日志管理">用户登录日志管理</a></li>-->
-<!--    </ol>-->
+    <ol class="breadcrumb">
+        <li>当前路径：</li>
+        <li> <a href="#" title="提现管理">提现管理</a></li>
+    </ol>
 </div>
 
-<script>
-    $(document).ready(function () {
-        $('#city-show').mouseenter(function () {
-            $('#city-data').show();
-        })
-        $('#city-data').mouseleave(function () {
-            $('#city-data').hide();
-        })
-    })
-</script>
 
 
 <div class="container-fluid">
@@ -193,32 +144,29 @@
     <div class="container-fluid">
         <table class="table table-hover">
             <tr class="info">
-                <th>用户昵称</th>
-                <th>充值金额</th>
-                <th>性别</th>
-                <th>省份</th>
-                <th>城市</th>
-                <th>母鸡数量</th>
-                <th>开地数量</th>
-                <th>金蛋总数</th>
-                <th>邀请成功人数</th>
-                <th>提现金额</th>
+                <th>用户姓名</th>
+                <th>银行卡号</th>
+                <th>提现金额(元)</th>
+                <th>创建时间</th>
+                <th>处理状态</th>
             </tr>
             <tr>
-                <td>2017-01-16 17:31:41</td>
-                <td>登录</td>
-                <td>1976161</td>
-                <td>无锡</td>
-                <td>176****0809</td>
-                <td>用户</td>
-                <td>Android</td>
-                <td>DEV</td>
-            </tr>                </table>
+                <?php foreach ($list as $name):?>
+
+                    <td><?= $name['name']?></td>
+                    <td><?= $name['brank_num']?></td>
+                    <td><?= $name['money']?></td>
+                    <td><?= $name['create_time']?></td>
+                    <td><?= $name['status'] ?></td>
+
+                <?php endforeach; ?>
+            </tr>
+        </table>
     </div>
     <div class="container-fluid text-center">
         <nav>
             <ul class="pagination">
-                1 条记录 1/1 页                  </ul>
+               <?php echo $page; ?>                </ul>
         </nav>
     </div>
     <div class="container-fluid text-center">
