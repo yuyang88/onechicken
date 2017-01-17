@@ -3,7 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class admin extends CI_Controller {
 
-    private $_cookieName = 'admin';
+
+    private $_cookieName = 'aid';
     private $_cookieTime = 7200;
     /**
      * Index Page for this controller.
@@ -24,16 +25,21 @@ class admin extends CI_Controller {
     {
         if($_POST)
         {
-            var_dump($_POST);die;
-            ajaxReturn(['status'=>1,'info'=>'成功'],'json');
-            set_cookie($this->_cookieName,1,time()+$this->_cookieTime);
-            /*array(3) { ["email"]=> string(2) "11" ["pwd"]=> string(2) "11" ["op_type"]=> string(1) "1" }*/
+
+            $this->load->model("admin_model");
+            $userInfo = $this->admin_model->getUsers($_POST['email']);
+            if(md5($_POST['password']) == $userInfo['pwd'])
+            {
+                setcookie($this->_cookieName,$userInfo['id'],time()+$this->_cookieTime);
+                setcookie('email',$userInfo['email'],time()+$this->_cookieTime);
+                header('location:http://localhost/onechicken/index.php/admin/ok');
+            }
         }
 
 
         if($_COOKIE[$this->_cookieName])
         {
-            header('location:http://localhost/onechicken/index.php/admin/ok');exit;
+            header('location:http://localhost/onechicken/index.php/admin/ok?cookie='.$_COOKIE[$this->_cookieName]);exit;
 
         }
 
@@ -45,5 +51,23 @@ class admin extends CI_Controller {
     public function show()
     {
         $this->load->view('tixian');
+        $this->load->view('admin_login');
+    }
+
+    public function user()
+    {
+        $data['list'] = [];
+        $this->load->view('admin_user');
+    }
+
+    public function tixian()
+    {
+        $data['list'] = [];
+        $this->load->view('tixian');
+    }
+
+    public function ok()
+    {
+        echo 22;die;
     }
 }
