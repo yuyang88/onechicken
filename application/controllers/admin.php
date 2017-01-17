@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class admin extends CI_Controller {
 
+
     private $_cookieName = 'aid';
     private $_cookieTime = 7200;
     /**
@@ -24,6 +25,7 @@ class admin extends CI_Controller {
     {
         if($_POST)
         {
+
             $this->load->model("admin_model");
             $userInfo = $this->admin_model->getUsers($_POST['email']);
             if(md5($_POST['password']) == $userInfo['pwd'])
@@ -42,6 +44,13 @@ class admin extends CI_Controller {
         }
 
 
+
+        $this->load->view('admin_login');
+    }
+
+    public function show()
+    {
+        $this->load->view('tixian');
         $this->load->view('admin_login');
     }
 
