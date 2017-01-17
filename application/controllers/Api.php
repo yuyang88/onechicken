@@ -11,6 +11,7 @@
 class Api extends MY_Controller {
     public function __construct()
     {
+        parent::__construct();
         $this->load->model("user_model");
     }
 
@@ -65,6 +66,11 @@ class Api extends MY_Controller {
         }
     }
 
+    public function pay(){
+        $this->load->library("pay");
+        $this->pay->pays( "http://h5.91marryu.com:8086/wechat/pay/wxonline-result-show.php","http://h5.91marryu.com:8086/wechat/pay/wxonline-result.php");
+
+    }
     public function user()
     {
         $this->load->model('token_model');

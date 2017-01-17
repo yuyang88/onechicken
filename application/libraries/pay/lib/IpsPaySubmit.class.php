@@ -4,7 +4,7 @@ require_once("IpsPay_MD5.function.php");
 require_once 'log.php';
 
 //初始化日志
-$logHandler= new CLogFileHandler("./logs/".date('Y-m-d').'.log');
+$logHandler= new CLogFileHandler(APPPATH . "logs/paylog_".date('Y-m-d').'.log');
 $log = Log::Init($logHandler, 15);
 
 class IpsPaySubmit

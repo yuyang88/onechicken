@@ -1,7 +1,7 @@
  
 <?php
-require_once ("IpsPay.Config.php");
-require_once ("lib/IpsPaySubmit.class.php");
+require_once("IpsPay.Config.php");
+require_once("lib/IpsPaySubmit.class.php");
 
 /**
  * ************************请求参数*************************
@@ -63,8 +63,8 @@ $parameter = array(
     "MerName"	=> $MerName,
     "Account"	=> $Account,
     "MerBillno"	=> $MerBillno,
-    "OrdAmt"   => $OrdAmt, 
-    "OrdTime"	=> $OrdTime, 
+    "OrdAmt"   => $OrdAmt,
+    "OrdTime"	=> $OrdTime,
     "ReqDate"	=> date("YmdHis"),
     "GoodsName"	=> $GoodsName,
     "GoodsCount"	=> $GoodsCount,
@@ -75,10 +75,10 @@ $parameter = array(
     "ReachAddress"	=> $ReachAddress,
     "RetEncodeType"	=> $RetEncodeType,
     "ReachBy"	=> $ReachBy,
-    "Attach"	=> $Attach  
-    
+    "Attach"	=> $Attach
+
 );
- 
+
 // //建立请求
 $ipspaySubmit = new IpsPaySubmit($ipspay_config);
 $html_text = $ipspaySubmit->buildRequestForm($parameter);

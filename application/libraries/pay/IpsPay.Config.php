@@ -14,4 +14,5 @@ $ipspay_config['S2Snotify_url'] = "http://h5.91marryu.com:8086/wechat/pay/wxonli
 $ipspay_config['return_url'] = "http://h5.91marryu.com:8086/wechat/pay/wxonline-result-show.php";
 
 $ipspay_config['MsgId'] = "";
+
 ?>
