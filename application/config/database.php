@@ -78,10 +78,10 @@ $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => '127.0.0.1',
 	'username' => 'root',
-	'password' => 'root123',
-	'database' => 'onechicken',
+	'password' => 'root',
+	'database' => 'test',
 	'dbdriver' => 'mysqli',
-	'dbprefix' => 'chicken_',
+	'dbprefix' => '',
 	'pconnect' => FALSE,
 	'db_debug' => (ENVIRONMENT !== 'production'),
 	'cache_on' => FALSE,
@@ -93,5 +93,6 @@ $db['default'] = array(
 	'compress' => FALSE,
 	'stricton' => FALSE,
 	'failover' => array(),
-	'save_queries' => TRUE
+	'save_queries' => TRUE,
+    'port'=>'3306'
 );
