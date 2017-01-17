@@ -32,18 +32,34 @@ CREATE TABLE `user_addition` (
 Navicat MySQL Data Transfer
 
 Source Server         : 本地
-Source Server Version : 50540
+Source Server Version : 50553
 Source Host           : localhost:3306
 Source Database       : test
 
 Target Server Type    : MYSQL
-Target Server Version : 50540
+Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2017-01-17 21:59:33
+Date: 2017-01-17 23:59:10
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for `admin_user`
+-- ----------------------------
+DROP TABLE IF EXISTS `admin_user`;
+CREATE TABLE `admin_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `email` varchar(255) NOT NULL,
+  `pwd` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of admin_user
+-- ----------------------------
+INSERT INTO `admin_user` VALUES ('1', 'admin@admin.com', '5416d7cd6ef195a0f7622a9c56b55e84');
 
 -- ----------------------------
 -- Table structure for `chicken_wechat_token`
@@ -107,11 +123,12 @@ CREATE TABLE `extract` (
   `wu_id` int(11) NOT NULL DEFAULT '0' COMMENT 'wechat_user id',
   `status` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1 未处理 2已处理',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='提现记录';
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='提现记录';
 
 -- ----------------------------
 -- Records of extract
 -- ----------------------------
+INSERT INTO `extract` VALUES ('1', 'www', '131313', '12', '19891831', '1', '1');
 
 -- ----------------------------
 -- Table structure for `top_up`
