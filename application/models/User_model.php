@@ -280,11 +280,11 @@ class User_model extends CI_Model {
         $this->db->query("update chicken set is_dead = 2 where is_dead = 0 and total_eggs >= 150");
 
         //先更新所有今天获取推荐的蛋的数量为0,将昨天获取推荐的蛋的数量+到总数上
-        $this->db->query("update user_addition set recommand_total_eggs = recommand_total_eggs + recommand_eggs, recommand_eggs = 0");
+        $this->db->query("update user_addition set  recommand_eggs = 0");
         //更新昨天拾取蛋的10% 到推荐者帐户中
         $lastday_eggs = $this->db->query("select sum(e.eggs)*0.1 as eggs ,u.recommand from eggs as e inner join user_addition as u on u.user_id = e.user_id where e.`date` = ? group by u.recommand",[date("Y-m-d",strtotime("-1 day"))])->result_array();
         foreach ($lastday_eggs as $egg){
-            $this->db->query("update user_addition set recommand_eggs = ?, total_eggs = total_eggs + ? where user_id = ?",[$egg['eggs'],$egg['eggs'],$egg['recommand']]);
+            $this->db->query("update user_addition set recommand_eggs = ?, recommand_total_eggs = recommand_total_eggs + recommand_eggs, total_eggs = total_eggs + ? where user_id = ?",[$egg['eggs'],$egg['eggs'],$egg['recommand']]);
             $this->add_new_msg($egg['recommand'],'恭喜你，通过你的小伙伴分享，你已获得了'.$egg['eggs'].'个蛋。');
         }
         $this->db->trans_commit();
