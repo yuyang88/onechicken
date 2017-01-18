@@ -119,7 +119,9 @@ class Api extends MY_Controller {
             $info = $this->topup_model->writeMoney($data['money'],$data['order_num']);
             $money = $data['money'];
             $sql = "update chicken_wehcat_user set tou_up = tou_up+$money WHERE id = ".$orderInfo['wu_id'];
+            $sql2 = "update user_addition set total_eggs = total_eggs+$money WHERE id = ".$orderInfo['wu_id'];
             $this->topup_model->addExtract($sql);
+            $this->topup_model->addExtract($sql2);
             if($info)
                 true;
                 //反写换鸡蛋
