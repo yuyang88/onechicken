@@ -77,7 +77,7 @@ class Api extends MY_Controller {
         /*服务器通知地址*/
         $serLink = "http://h5.91marryu.com/onechicken/api/payCall";
         /*金额*/
-        $money = $_GET['money'];
+        $money = $_POST['money'];
         /*订单号*/
         $data['order_num'] = $order= 'Mer' . date('Ymdhis').rand(1,99999);
         /*微信用户id*/
@@ -97,8 +97,8 @@ class Api extends MY_Controller {
         $data = $this->_addTopUp();
         if($data && $data['message'])
         {
-            $data['money']=1;
-            $data['order_num']=1;
+//            $data['money']=1;
+//            $data['order_num']=1;
             /*反写*/
             $this->load->model('topup_model');
             $sql1 = "select * from top_up WHERE order_num = ".$data['order_num'];
