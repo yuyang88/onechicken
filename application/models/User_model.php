@@ -169,7 +169,7 @@ class User_model extends CI_Model {
         }
         $this->db->trans_begin();
 
-        $no_soils = $this->db->query("select * from soil where user_id = ? and enabled = 0")->result_array();
+        $no_soils = $this->db->query("select * from soil where user_id = ? and enabled = 0",[$userid])->result_array();
         if(count($no_soils) == 0){
             throw new Exception("你已永久拥有满10块养鸡的地，无法再兑换了！");
         }
@@ -189,8 +189,9 @@ class User_model extends CI_Model {
             }
             $open_soil_id = $soil_id;
             $this->db->query("update soil set enabled = 1 where id = ? and user_id = ?",[$soil_id,$userid]);
-            $this->db->query("update user_addition set total_eggs = total_eggs - 10 where user_id = ?",[$userid]);
         }
+        $this->db->query("update user_addition set total_eggs = total_eggs - 10 where user_id = ?",[$userid]);
+
         $this->add_new_msg($userid,"恭喜你，你已永久拥有一块养鸡的地！");
         $this->db->trans_commit();
         return $open_soil_id;

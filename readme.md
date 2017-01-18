@@ -144,7 +144,7 @@
 ### 提交信息
 |名称|值|说明|
 |---|---|---|
-|URL|http://domain/api/messages||
+|URL|http://domain/api/pickup_eggs||
 |方法|post||
 |参数|userid|用户ID|
 |参数|soil_id|土地的ID|
@@ -154,6 +154,21 @@
 |名称|类型|说明|
 |----|----|----|
 ||int|拾取的鸡蛋的数量|
+
+## 开地
+### 提交信息
+|名称|值|说明|
+|---|---|---|
+|URL|http://domain/api/enable_soil||
+|方法|post||
+|参数|userid|用户ID|
+
+
+### 返回数据结构
+|名称|类型|说明|
+|----|----|----|
+||int|开地成功后地的ID|
+
 
 
 

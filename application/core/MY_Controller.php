@@ -27,7 +27,7 @@ class MY_Controller extends CI_Controller {
      * @param $msg
      * @return string
      */
-    protected function send_data($status,$data,$msg){
+    protected function send_data($status,$data,$msg=false){
         header("Content-type: application/json");
         $result = json_encode([
             "status"=>$status,

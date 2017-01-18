@@ -80,7 +80,7 @@ class Api extends MY_Controller {
 
     public function enable_soil(){
         $user_id = $this->get_userid();
-        $soil_id = $_POST['soil_id'];
+        $soil_id = isset($_POST['soil_id']) ? $_POST['soil_id'] : false;
         try{
             $soil_id = $this->user_model->enable_soil($user_id,$soil_id);
             $this->send_data(true,$soil_id);
