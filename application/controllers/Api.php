@@ -94,7 +94,7 @@ class Api extends MY_Controller {
         /*订单号*/
         $data['order_num'] = $order= 'Mer' . date('Ymdhis').rand(1,99999);
         /*微信用户id*/
-        $data['wu_id'] = $wu_id = $_COOKIE['user_id'];
+        $data['wu_id'] = $wu_id = $_POST['userid'];
         $data['create_time'] = time();
 
         /*写入支付记录*/
