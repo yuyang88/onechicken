@@ -52,6 +52,19 @@ class Api extends MY_Controller {
     }
 
     /**
+     * 蛋兑换成鸡
+     */
+    public function egg2chicken(){
+        $user_id = $this->get_userid();
+        try{
+            $soil_id = $this->user_model->egg2chicken($user_id);
+            $this->send_data(true,$soil_id);
+        }catch (Exception $e){
+            $this->send_data(false,null,$e->getMessage());
+        }
+    }
+
+    /**
      * 开地
      */
 
@@ -59,8 +72,8 @@ class Api extends MY_Controller {
         $user_id = $this->get_userid();
         $soil_id = $_POST['soil_id'];
         try{
-            $this->user_model->enable_soil($user_id,$soil_id);
-            $this->send_data(true);
+            $soil_id = $this->user_model->enable_soil($user_id,$soil_id);
+            $this->send_data(true,$soil_id);
         }catch (Exception $e){
             $this->send_data(false,null,$e->getMessage());
         }

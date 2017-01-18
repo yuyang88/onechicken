@@ -159,7 +159,8 @@ class User_model extends CI_Model {
             throw new Exception("你已永久拥有满10块养鸡的地，无法再兑换了！");
         }
         if(!$soil_id){
-            $this->db->query("update soil set enabled = 1 where id = ? and user_id = ?",[$no_soils[0]['id'],$userid]);
+            $open_soil_id = $no_soils[0]['id'];
+            $this->db->query("update soil set enabled = 1 where id = ? and user_id = ?",[$open_soil_id,$userid]);
         }else{
             $has_soil_id = false;
             foreach($no_soils as $item){
@@ -171,13 +172,68 @@ class User_model extends CI_Model {
             if(!$has_soil_id){
                 throw new Exception("你选择的地已经开过");
             }
+            $open_soil_id = $soil_id;
             $this->db->query("update soil set enabled = 1 where id = ? and user_id = ?",[$soil_id,$userid]);
-            $this->db->query("update user_addition set total_eggs -= 10 where user_id = ?",[$userid]);
+            $this->db->query("update user_addition set total_eggs = total_eggs - 10 where user_id = ?",[$userid]);
         }
         $this->add_new_msg($userid,"恭喜你，你已永久拥有一块养鸡的地！");
         $this->db->trans_commit();
+        return $open_soil_id;
     }
 
+    /**
+     * 蛋兑换成鸡
+     * @param $userid 用户ID
+     * @return 返回鸡所在的地的ID
+     */
+    public function egg2chicken($userid){
+        $userinfo = $this->_userinfo($userid);
+        if($userinfo['total_eggs'] < 100){
+            throw new Exception("没有足够的蛋兑换");
+        }
+        if($userinfo['chickens'] >= $userinfo['soils']*2){
+            if($userinfo['soils'] < 10){
+                throw new Exception("您的地不足,请先兑换一块地");
+            }else{
+                throw new Exception("你已拥有20只超生产力的母鸡，无法再兑换！");
+            }
+
+        }
+        $this->db->trans_begin();
+
+        $soil_arr = $this->soil($userid);
+        $selected_soil = false;
+        $selected_soil_henroost = false;
+        foreach($soil_arr as $soil){
+            if($soil['enabled'] == 1){
+                if($soil['henroost_a'] == null){
+                    $selected_soil = $soil['id'];
+                    $selected_soil_henroost = 'a';
+                    break;
+                }
+                if($soil['henroost_b'] == null){
+                    $selected_soil = $soil['id'];
+                    $selected_soil_henroost = 'b';
+                    break;
+                }
+            }
+        }
+        if(!$selected_soil_henroost || !$selected_soil){
+            throw new Exception("系统出现问题,请联系管理员解决");
+        }
+        //添加到鸡
+        $this->db->insert('chicken',['soil_id'=>$selected_soil,'user_id'=>$userid,'soil_henroost'=>$selected_soil_henroost]);
+        $chicken_id = $this->db->insert_id();
+        if($selected_soil_henroost == 'a'){
+            $update_soil_sql = "update soil set henroost_a = ?  where user_id = ? and id = ?";
+        }else{
+            $update_soil_sql = "update soil set henroost_b = ?  where user_id = ? and id = ?";
+        }
+        $this->db->query($update_soil_sql,[$chicken_id,$userid,$selected_soil]);
+        $this->db->query("update user_addition set total_eggs = total_eggs - 100 , chickens = chickens + 1 where user_id = ? ",[$userid]);
+        $this->db->trans_commit();
+        return $selected_soil;
+    }
 
     /**
      * 添加新的消息
