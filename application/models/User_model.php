@@ -60,7 +60,7 @@ class User_model extends CI_Model {
         $result = $this->db->query("select * from soil where user_id = ?",[$userid])->result_array();
         foreach($result as &$item){
             if($item['enabled']){
-                $chickens = $this->db->query("select * from chicken where soil_id = ? and user_id = ? and is_dead = 0 ",[$item['id'],$userid])->result_array();
+                $chickens = $this->db->query("select * from chicken where soil_id = ? and user_id = ? and is_dead in (0,2) ",[$item['id'],$userid])->result_array();
                 $item['chickens'] = $chickens;
             }
         }
@@ -128,8 +128,14 @@ class User_model extends CI_Model {
         if($chicken_info['no_get_eggs'] == 0){
             throw new Exception("此鸡今天已经没有蛋可拾取");
         }
-        $this->db->query("update user_addition set today_eggs += ?,total_eggs += ?  where user_id = ?",[$chicken_info['no_get_eggs'],$chicken_info['no_get_eggs'],$userid]);
+        $this->db->query("update user_addition set total_eggs += ?  where user_id = ?",[$chicken_info['no_get_eggs'],$chicken_info['no_get_eggs'],$userid]);
+        $this->db->insert("eggs",['date'=>date("Y-m-d"),'eggs'=>$chicken_info['no_get_eggs'],'user_id'=>$userid,'chicken_id'=>$chicken_info['id']]);
         $this->db->query("update chicken set no_get_eggs = 0 where id = ?",[$chicken_id]);
+        if($chicken_info['is_dead'] == 2){
+            $this->db->query("update chicken set is_dead = 1 where id = ?",[$chicken_id]);
+            $this->db->query("update soil set henroost_".$chicken_info['soil_henroost']. ' = null where id = ?',[$soil_id]);
+            $this->db->query("update user_addition set chickens = chickens - 1 where user_id = ? ",[$userid]);
+        }
         $this->db->trans_commit();
         return $chicken_info['no_get_eggs'];
 
@@ -244,4 +250,26 @@ class User_model extends CI_Model {
         $this->db->insert('user_messages',["user_id"=>$userid,"message">$message]);
     }
 
+
+    /**
+     * 每天生蛋任务
+     * 流程
+     * 将用户所有未死亡的鸡的蛋+5,总产蛋数+5
+     * 更新推荐人的蛋为昨天拾取的蛋的总数*0.1
+     */
+    public function product_eggs(){
+        $this->db->trans_begin();
+        $this->db->query("update chicken set no_get_eggs = no_get_eggs + 5 , total_eggs = total_eggs + 5 where is_dead = 0 and total_eggs < 150 ");
+        $this->db->query("update chicken set is_dead = 2 where is_dead = 0 and total_eggs >= 150");
+
+        //先更新所有今天获取推荐的蛋的数量为0,将昨天获取推荐的蛋的数量+到总数上
+        $this->db->query("update user_addition set recommand_total = recommand_eggs, recommand_eggs = 0");
+        //更新昨天拾取蛋的10% 到推荐者帐户中
+        $lastday_eggs = $this->db->query("select sum(e.eggs)*0.1 as eggs ,u.recommand from eggs as e inner join user_addition as u on u.user_id = e.user_id where e.`date` = ? group by u.recommand",[date("Y-m-d",strtotime("-1 day"))])->result_array();
+        foreach ($lastday_eggs as $egg){
+            $this->db->query("update user_addition set recommand_eggs = ?, total_eggs = total_eggs + ? where user_id = ?",[$egg['eggs'],$egg['eggs'],$egg['recommand']]);
+            $this->add_new_msg($egg['recommand'],'恭喜你，通过你的小伙伴分享，你已获得了'.$egg['eggs'].'个蛋。');
+        }
+        $this->db->trans_commit();
+    }
 }

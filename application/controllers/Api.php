@@ -213,6 +213,13 @@ class Api extends MY_Controller {
         $this->send_data(false,[],'失败');
     }
 
+    /**
+     * 每天0.00运行的任务
+     */
+    public function dayjob(){
+        $this->user_model->product_eggs();
+    }
+
 
 
     public function user()
