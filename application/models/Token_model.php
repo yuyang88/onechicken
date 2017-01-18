@@ -9,7 +9,7 @@ class token_model extends CI_Model
 {
     private $table_token = 'chicken_wechat_token';
 
-    private $_url = 'http://localhost/onechicken/index.php/Api/user';
+    private $_url = 'http://h5.91marryu.com//onechicken/index.php/Api/user';
 
 
 

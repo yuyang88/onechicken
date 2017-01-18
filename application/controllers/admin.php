@@ -36,7 +36,7 @@ class admin extends CI_Controller {
             {
                 setcookie($this->_cookieName,$userInfo['id'],time()+$this->_cookieTime);
                 setcookie($this->_cookieUserName,$userInfo['email'],time()+$this->_cookieTime);
-                header('location:http://localhost/onechicken/index.php/admin/ok');
+                header('location:http://h5.91marryu.com//onechicken/index.php/admin/ok');
             }
         }
 
@@ -49,7 +49,7 @@ class admin extends CI_Controller {
         $this->load->library('pagination');
         $this->load->model('topup_model');
 
-        $config['base_url'] = 'http://localhost/onechicken/index.php/admin/show/page/';
+        $config['base_url'] = 'http://h5.91marryu.com//onechicken/index.php/admin/show/page/';
         $countSql = " SELECT count(*) from chicken_wechat_user wu LEFT JOIN user_addition ua ON wu.id=ua.user_id";
         $count= $this->topup_model->querySql($countSql);
 
@@ -91,7 +91,7 @@ class admin extends CI_Controller {
         $countSql = "select count(*) from extract ";
         $count  = $this->topup_model->querySql($countSql);
 
-        $config['base_url'] = 'http://localhost/onechicken/index.php/admin/tixian/page/';
+        $config['base_url'] = 'http://h5.91marryu.com//onechicken/index.php/admin/tixian/page/';
         $config['total_rows'] = $count['count(*)'];
         $config['per_page'] = $this->_pageNum;
         $config['enable_query_strings'] = true;
@@ -115,7 +115,7 @@ class admin extends CI_Controller {
 
             if($value['status'] == 1)
             {
-                $link = "http://localhost/onechicken/index.php/admin/ok?id=$id";
+                $link = "http://h5.91marryu.com//onechicken/index.php/admin/ok?id=$id";
                 $list[$key]['status'] = "<a href=$link>未处理</a>";
             }
             else
@@ -133,7 +133,7 @@ class admin extends CI_Controller {
     {
         setcookie($this->_cookieUserName,'',-1);
         setcookie($this->_cookieName,'',-1);
-        header('location:http://localhost/onechicken/index.php/admin/index');
+        header('location:http://h5.91marryu.com//onechicken/index.php/admin/index');
 
     }
 
@@ -146,7 +146,7 @@ class admin extends CI_Controller {
             $this->topup_model->tixian($id);
             $this->load->view('success');
         }catch (Exception $e){
-            header('location:http://localhost/onechicken/index.php/admin/tixian');
+            header('location:http://h5.91marryu.com//onechicken/index.php/admin/tixian');
         }
 
     }

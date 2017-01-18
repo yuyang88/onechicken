@@ -9,21 +9,21 @@
     <link rel="icon" href="">
     <title>用户信息</title>
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" type="text/css" href="http://localhost/onechicken/public/public/Css/admin/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="http://localhost/onechicken/public/public/Css/jquery-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="http://h5.91marryu.com//onechicken/public/public/Css/admin/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="http://h5.91marryu.com//onechicken/public/public/Css/jquery-ui.min.css" />
     <!-- Custom styles for this template -->
-    <link rel="stylesheet" type="text/css" href="http://localhost/onechicken/public/public/Css/admin/admin.css" />
+    <link rel="stylesheet" type="text/css" href="http://h5.91marryu.com//onechicken/public/public/Css/admin/admin.css" />
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="http://localhost/onechicken/public/public/Js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <script src="http://localhost/onechicken/public/public/Js/ie-emulation-modes-warning.js"></script>
-    <script type="text/javascript" src="http://localhost/onechicken/public/public/Js/jquery.min.js"></script>
-    <script type="text/javascript" src="http://localhost/onechicken/public/public/Js/jquery.validate.js"></script>
-    <script type="text/javascript" src="http://localhost/onechicken/public/public/Js/jquery-impromptu.min.js"></script>
+    <!--[if lt IE 9]><script src="http://h5.91marryu.com//onechicken/public/public/Js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="http://h5.91marryu.com//onechicken/public/public/Js/ie-emulation-modes-warning.js"></script>
+    <script type="text/javascript" src="http://h5.91marryu.com//onechicken/public/public/Js/jquery.min.js"></script>
+    <script type="text/javascript" src="http://h5.91marryu.com//onechicken/public/public/Js/jquery.validate.js"></script>
+    <script type="text/javascript" src="http://h5.91marryu.com//onechicken/public/public/Js/jquery-impromptu.min.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-    <script src="http://localhost/onechicken/public/public/Js/html5shiv.js"></script>
-    <script src="http://localhost/onechicken/public/public/Js/respond.min.js"></script>
+    <script src="http://h5.91marryu.com//onechicken/public/public/Js/html5shiv.js"></script>
+    <script src="http://h5.91marryu.com//onechicken/public/public/Js/respond.min.js"></script>
     <![endif]-->
     <style>
         #Tags .navArea .userInfo {
@@ -77,8 +77,8 @@
                 <li class="">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown">后台管理 <span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="http://localhost/onechicken/index.php/admin/show">用户信息</a></li>
-                        <li><a href="http://localhost/onechicken/index.php/admin/show">提现管理</a></li>
+                        <li><a href="http://h5.91marryu.com//onechicken/index.php/admin/show">用户信息</a></li>
+                        <li><a href="http://h5.91marryu.com//onechicken/index.php/admin/show">提现管理</a></li>
                     </ul>
                 </li>
             </ul>
@@ -90,7 +90,7 @@
                         <!--<li><a href="#">上次登录时间：</a></li>--->
                         <li class="divider"></li>
                         <!--<li><a href="/dashboard/system/updateAdminPwd.html">修改我的密码</a></li>-->
-                        <li><a href="http://localhost/onechicken/index.php/admin/logout">退出登录</a></li>
+                        <li><a href="http://h5.91marryu.com//onechicken/index.php/admin/logout">退出登录</a></li>
                     </ul>
                 </li>
             </ul>
@@ -191,12 +191,12 @@
     <div class="container-fluid text-center">
     </div>
 
-    <script src="http://localhost/onechicken/public/public/Js/html5shiv.js"></script>
-    <script type="text/javascript" src="http://localhost/onechicken/public/public/Js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="http://localhost/onechicken/public/public/Js/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="http://localhost/onechicken/public/public/Js/admin.js"></script>
-    <script type="text/javascript" src="http://localhost/onechicken/public/public/Js/jquery-ui-timepicker-addon.js"></script>
-    <script type="text/javascript" src="http://localhost/onechicken/public/public/Js/jquery.ui.datepicker-zh-CN.js.js" charset="gb2312" ></script>
-    <script type="text/javascript" src="http://localhost/onechicken/public/public/Js/jquery-ui-timepicker-zh-CN.js"></script>
+    <script src="http://h5.91marryu.com//onechicken/public/public/Js/html5shiv.js"></script>
+    <script type="text/javascript" src="http://h5.91marryu.com//onechicken/public/public/Js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://h5.91marryu.com//onechicken/public/public/Js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="http://h5.91marryu.com//onechicken/public/public/Js/admin.js"></script>
+    <script type="text/javascript" src="http://h5.91marryu.com//onechicken/public/public/Js/jquery-ui-timepicker-addon.js"></script>
+    <script type="text/javascript" src="http://h5.91marryu.com//onechicken/public/public/Js/jquery.ui.datepicker-zh-CN.js.js" charset="gb2312" ></script>
+    <script type="text/javascript" src="http://h5.91marryu.com//onechicken/public/public/Js/jquery-ui-timepicker-zh-CN.js"></script>
 </body>
 </html>
