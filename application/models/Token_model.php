@@ -89,29 +89,20 @@ class token_model extends CI_Model
     public function writeResult($userId,$parentId = 0,$recommand_code = '')
     {
         $save['user_id'] = $userId;
-        $this->db->insert('soil',$save);
-        $this->db->insert('soil',$save);
-        $this->db->insert('soil',$save);
-        $this->db->insert('soil',$save);
-        $this->db->insert('soil',$save);
-        $this->db->insert('soil',$save);
-        $this->db->insert('soil',$save);
-        $this->db->insert('soil',$save);
-        $this->db->insert('soil',$save);
-        $this->db->insert('soil',$save);
-//        $saveS[] = [
-//            $save,
-//            $save,
-//            $save,
-//            $save,
-//            $save,
-//            $save,
-//            $save,
-//            $save,
-//            $save,
-//            $save,
-//        ];
-//        $this->db->insert_batch('soil',$saveS);
+
+        $saveS = [
+            $save,
+            $save,
+            $save,
+            $save,
+            $save,
+            $save,
+            $save,
+            $save,
+            $save,
+            $save,
+        ];
+        $this->db->insert_batch('soil',$saveS);
         $save['recommand'] = $parentId;
         $save['recommand_code'] = $recommand_code;
         $this->db->insert('user_addition',$save);
