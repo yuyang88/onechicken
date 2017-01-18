@@ -90,7 +90,7 @@ class Api extends MY_Controller {
         /*服务器通知地址*/
         $serLink = "http://h5.91marryu.com/onechicken/api/payCall";
         /*金额*/
-        $money = $_POST['money'];
+        $money = $_POST['money']?$_POST['money']:'0.02';
         /*订单号*/
         $data['order_num'] = $order= 'Mer' . date('Ymdhis').rand(1,99999);
         /*微信用户id*/
