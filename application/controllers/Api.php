@@ -43,8 +43,16 @@ class Api extends MY_Controller {
      */
     public function pickup_eggs(){
         $user_id =  $this->get_userid();
-        $soil_id = $_POST['soil_id'];
-        $chicken_id = $_POST['chicken_id'];
+        $soil_id =  isset($_POST['soil_id']) ? $_POST['soil_id']: false;
+        $chicken_id = isset($_POST['chicken_id']) ? $_POST['chicken_id'] : false;
+        if(!$soil_id){
+            $this->send_data(false,null,'参数错误,没有传递土地的ID');
+            die;
+        }
+        if(!$chicken_id){
+            $this->send_data(false,null,'参数错误,没有传递鸡的ID');
+            die;
+        }
         try{
             $pickup_nums = $this->user_model->pickup_eggs($user_id,$soil_id,$chicken_id);
             $this->send_data(true,$pickup_nums,null);

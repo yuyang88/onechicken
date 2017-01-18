@@ -137,7 +137,7 @@ class User_model extends CI_Model {
         if($chicken_info['no_get_eggs'] == 0){
             throw new Exception("此鸡今天已经没有蛋可拾取");
         }
-        $this->db->query("update user_addition set total_eggs += ?  where user_id = ?",[$chicken_info['no_get_eggs'],$chicken_info['no_get_eggs'],$userid]);
+        $this->db->query("update user_addition set total_eggs = total_eggs + ?  where user_id = ?",[$chicken_info['no_get_eggs'],$userid]);
         $this->db->insert("eggs",['date'=>date("Y-m-d"),'eggs'=>$chicken_info['no_get_eggs'],'user_id'=>$userid,'chicken_id'=>$chicken_info['id']]);
         $this->db->query("update chicken set no_get_eggs = 0 where id = ?",[$chicken_id]);
         if($chicken_info['is_dead'] == 2){
