@@ -62,6 +62,15 @@ class token_model extends CI_Model
             return $info;
 
         $this->db->insert('chicken_wechat_user',$saveData);
+        usleep(50000);
+        $parentInfo = $this->db->query("select * from chicken_wechat_user where id = ?",[$parent_id])->row_array();
+
+        $this->writeResult($parentInfo['id'],$parentInfo['parent_id'],$parentInfo['recommand_code']);
+
+
+
+
+
         return $saveData;
 
         //获取code
@@ -77,6 +86,14 @@ class token_model extends CI_Model
          * */
     }
 
+    public function writeResult($userId,$parentId = 0,$recommand_code = '')
+    {
+        $save['user_id'] = $userId;
+        $this->db->insert('soil',$save);
+        $save['recommand'] = $parentId;
+        $save['recommand_code'] = $recommand_code;
+        $this->db->insert('user_addition',$save);
+    }
     public function getWuId($wechat_id)
     {
         return $this->db->query("select * from chicken_wechat_user WHERE wechat_id = ? order by create_time DESC limit 1  ",[$wechat_id])->row_array();
