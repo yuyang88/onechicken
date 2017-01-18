@@ -68,7 +68,13 @@ class wechat extends CI_Controller
         if($_GET['user_id'])
             setcookie('user_id',$_GET['user_id'],time()+8640000);
 
-        $this->load->view('chicken');
+        $this->load->model('token_model');
+        $this->load->model('topup_model');
+        $wuinfo = $this->topup_model->querySql("select * from chicken_wechat_user WHERE id = ".$_COOKIE['user_id']);
+//        $this->token_model->getWeChatSignature();
+        $data = $this->token_model->setToken();
+        $data['user'] = $wuinfo[0];
+        $this->load->view('chicken',$data);
     }
 
 
