@@ -8,7 +8,7 @@
 
 class Pay
 {
-    public function pays($MerchantUrl,$ServerUrl)
+    public function pays($MerchantUrl,$ServerUrl,$OrdAmt = '0.02',$orderNum)
     {
         require_once __DIR__ . '/pay/IpsPay.Config.php';
         require_once __DIR__ . '/pay/lib/IpsPaySubmit.class.php';
@@ -20,9 +20,13 @@ class Pay
 //商户账户号
         $Account = '1919420016';
 //商户订单号
-        $MerBillno = 'Mer' . date('ymdhis');
+        if($orderNum)
+            $MerBillno = $orderNum;
+        else
+        $MerBillno = 'Mer' . date('ymdhis').rand(1,99999);
+
 //订单金额金额
-        $OrdAmt = '0.02';
+        $OrdAmt = $OrdAmt;
 //订单时间
         $OrdTime = date('Y-m-d H:i:s');
 //商品名称

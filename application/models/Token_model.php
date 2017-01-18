@@ -7,7 +7,7 @@
  */
 class token_model extends CI_Model
 {
-    private $table_token = 'wechat_token';
+    private $table_token = 'chicken_wechat_token';
 
     private $_url = 'http://localhost/onechicken/index.php/Api/user';
 
@@ -37,7 +37,7 @@ class token_model extends CI_Model
      *
      * */
 
-    public  function getWeChatOpenId($code = '')
+    public  function getWeChatOpenId($code = '',$recommand_code= '',$parent_id = 0)
     {
 
         $weChatJsonInfo = curlGet(sprintf(self::getWebToken,self::appId,self::secret,$code));
@@ -52,8 +52,12 @@ class token_model extends CI_Model
             'province'=>$userInfo['province'],
             'city'=>$userInfo['city'],
             'sex'=>$userInfo['sex'],
+            'recommand_code'=>md5($userInfo['openid'].time()),
+            'parent_code'=>$recommand_code,
+            'parent_id'=>$parent_id,
         ];
-        $this->save($saveData);
+        $this->load-model('chicken_wechat_user');
+        $this->chicken_wechat_user->save($saveData);
 
         return $saveData;
 
@@ -68,6 +72,16 @@ class token_model extends CI_Model
     "scope": "snsapi_userinfo"
 }
          * */
+    }
+
+    public function getWuId($wechat_id)
+    {
+        return $this->db->query("select * from chicken_wechat_user WHERE wechat_id = ? limit 1 order by create_time DESC ",[$wechat_id])->row_array();
+    }
+
+    public function getid($recommand_code)
+    {
+        return $this->db->query("select * from chicken_wechat_user WHERE recommand_code = ? limit 1 order by create_time DESC ",[$recommand_code])->row_array();
     }
 
     public function _getCode($link = "")
@@ -90,7 +104,7 @@ class token_model extends CI_Model
     {
 
 
-        return $this->db->where('valid_time > ',time())->get($this->table_token)->result_array();
+        return $this->db->query("select * from chicken_wechat_token WHERE valid_time > ".time()." ORDER BY id DESC ")->row_array();
     }
 
     /**
@@ -98,7 +112,11 @@ class token_model extends CI_Model
      */
     public function setToken()
     {
-        $this->getWeChatSignature();
+        if($this->getToken())
+        {
+            return $this->getToken();
+        }
+       return $this->getWeChatSignature();
     }
 
     /**
