@@ -16,7 +16,7 @@ class Topup_model extends CI_Model
 
     public function writeMoney($money,$order_num)
     {
-        $sql = "update top_up set money = $money where order_num = $order_num limit 1";
+        $sql = "update top_up set money = $money where order_num = "."'".$order_num."'"." limit 1";
 //        return $this->db->query("update top_up set money = ? where order_num = ? limit 1",[$money],$order_num);
         return $this->db->query($sql);
     }

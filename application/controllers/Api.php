@@ -86,9 +86,9 @@ class Api extends MY_Controller {
         $this->load->model('token_model');
         $this->load->library("pay");
         /*用户地址*/
-        $memLink = "http://h5.91marryu.com/onechicken/wechat/game";
+        $memLink = "http://h5.91marryu.com/onechicken/index.php/wechat/game";
         /*服务器通知地址*/
-        $serLink = "http://h5.91marryu.com/onechicken/api/payCall";
+        $serLink = "http://h5.91marryu.com/onechicken/index.php/api/payCall";
         /*金额*/
         $money = $_POST['money']?$_POST['money']:'0.02';
         /*订单号*/
@@ -105,19 +105,22 @@ class Api extends MY_Controller {
 
     public function payCall()
     {
+
         //todo:反写换鸡蛋
         $data = $this->_addTopUp();
+        $this->load->model('token_model');
         if($data && $data['message'])
         {
 //            $data['money']=1;
 //            $data['order_num']=1;
             /*反写*/
             $this->load->model('topup_model');
-            $sql1 = "select * from top_up WHERE order_num = ".$data['order_num'];
+            $sql1 = "select * from top_up WHERE order_num = "."'".$data['order_num']."'";
             $orderInfo = $this->topup_model->querySql($sql1);
+            $orderInfo = $orderInfo[0];
             $info = $this->topup_model->writeMoney($data['money'],$data['order_num']);
             $money = $data['money'];
-            $sql = "update chicken_wehcat_user set tou_up = tou_up+$money WHERE id = ".$orderInfo['wu_id'];
+            $sql = "update chicken_wechat_user set top_up = top_up+$money WHERE id = ".$orderInfo['wu_id'];
             $sql2 = "update user_addition set total_eggs = total_eggs+$money WHERE id = ".$orderInfo['wu_id'];
             $this->topup_model->addExtract($sql);
             $this->topup_model->addExtract($sql2);
@@ -135,59 +138,73 @@ class Api extends MY_Controller {
             else {
                 $paymentResult = $_REQUEST['paymentResult'];
                 $xmlResult = new SimpleXMLElement($paymentResult);
-                $strSignature = $xmlResult->WxPayRsp->head->Signature;
                 $rspCode = $xmlResult->WxPayRsp->head->RspCode;
                 if($rspCode == "000000")
                 {
-                    $strBody = subStrXml("<body>","</body>",$paymentResult);
-
-                    if(md5Verify($strBody,$strSignature,$this->ipspay_config["MerCode"],$this->ipspay_config["MerCert"])){
-                        return true;
-                    }else{
-                        return false;
-                    }
+                    return true;
                 }
 
             }
         } catch (Exception $e) {
-            Log::ERROR("异常:" . $e);
+
         }
         return false;
+    }
+
+    public function subStrXml($begin,$end,$str)
+    {
+        $b= (strpos($str,$begin));
+        $c= (strpos($str,$end));
+
+        return substr($str,$b,$c-$b + 7);
+
+    }
+    public function md5Verify($prestr, $sign,$merCode, $key)
+    {
+        $prestr = $prestr .$merCode. $key;
+        $mysgin = md5($prestr);
+
+        if($mysgin == $sign) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     private function _addTopUp()
     {
         $verify_result = $this->verifyReturn();
         if ($verify_result) { // 验证成功
-
             $paymentResult = $_REQUEST['paymentResult'];
-            $xmlResult = new SimpleXMLElement($paymentResult);
-            $status = $xmlResult->WxPayRsp->body->Status;
-            if($status == "Y")
-            {
-                $merBillNo = $xmlResult->WxPayRsp->body->MerBillno;
-                /*订单号*/
-                $data['order_num'] = $MerCode = $xmlResult->WxPayRsp->body->MerCode;
-                $Account = $xmlResult->WxPayRsp->body->Account;
-                $IpsBillNo = $xmlResult->WxPayRsp->body->IpsBillNo;
-                /*订单金额*/
-                $data['money'] =$ordAmt = $xmlResult->WxPayRsp->body->OrdAmt;
-                $message = true;
-            }elseif($status == "N")
-            {
-                $message = true;
-            }else {
-                $message = true;
-            }
+            $data = $this->xml_to_array($paymentResult);
+            $return =  $data['WxPayRsp']['body'];
+            $return['message'] = $data['WxPayRsp']['head']['RspCode'];
+            $return['order_num'] = $return['MerBillno'];
+            $return['money'] = $return['OrdAmt'];
 
-        } else {
-            $message = false;
+            return $return;
+
         }
-        $data['message'] = $message ;
-
     }
 
-
+    function xml_to_array($xml)
+    {
+        $array = (array)(simplexml_load_string($xml));
+        foreach ($array as $key=>$item){
+            $array[$key]  =  $this->struct_to_array((array)$item);
+        }
+        return $array;
+    }
+    function struct_to_array($item) {
+        if(!is_string($item)) {
+            $item = (array)$item;
+            foreach ($item as $key=>$val){
+                $item[$key]  =  $this->struct_to_array($val);
+            }
+        }
+        return $item;
+    }
     /**
      * 微信分享接口 所需access_token && signature
      */

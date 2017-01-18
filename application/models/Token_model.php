@@ -117,6 +117,11 @@ class token_model extends CI_Model
         return $this->db->query("select * from chicken_wechat_user WHERE recommand_code = ?  order by create_time DESC limit 1",[$recommand_code])->row_array();
     }
 
+    public function insertLog($table,$data)
+    {
+        return $this->db->insert($table,$data);
+    }
+
     public function _getCode($link = "")
     {
         if($link) {
