@@ -4,10 +4,17 @@
  * 
  */
 
+var userid = getCookie("userid");
+
 new Vue({
 	el: "#chicken",
 	data: {
+		iswaiting: true,
 		c_money: 50,
+		t_money: '',
+		tx_name: '',
+		tx_card: '',
+		is_tx: false,
 		t_timer: null, 	// 弹窗时间控制器
 		a_message: { 	// 弹窗
 			font: '',
@@ -25,41 +32,66 @@ new Vue({
 			friend: 0,
 			all_money: 0
 		},
-		s_friend: [],
+		recommand_list: [],
 		tian: []
 	},
 	mounted: function (){
-		/*var _this = this;
-		if (Math.random()<0.5) {
-			_this.a_message.isClose = false;
-			_this.a_message.isStatus = 1;
-			var num = 10;
-			_this.a_message.message = '通过你的小伙伴分享，你已获得了'+num+'个蛋。';
-			_this.j_data.dan += num;
-		}
-		if (Math.random()<0.5) {
-			setTimeout(function (){
-				_this.a_message.isClose = true;
-				_this.$nextTick(function (){
-					var num2 = 3;
-					_this.j_data.ji -= num2;
-					_this.a_message.isClose = false;
-					_this.a_message.isStatus = 2;
-					_this.a_message.message = '你的鸡已不会生蛋了，将告别你';
-				});
-			},2000);
-		}*/
 		var _this = this;
 		ajax({
-			url: "http://localhost/onechicken/public/home/inface/get_chicken.txt",
+			url: "/api/info",
 			data: {
-				"user_id": user_id
+				"userid": userid
 			},
 			type: "post",
-			success: function (data){
-				data = eval('('+data+')');
-				_this.j_data = _this.copy(data.j_data);
-				_this.tian = _this.copy(data.data);
+			success: function (message){
+				_this.iswaiting = false;
+				message = eval('('+message+')');
+				var data = message.data;
+
+
+				var j_data = {
+					ji: 0,
+					dan: data.eggs,
+					di: 0,
+					die_ji: 0,
+					friend: data.recommand_eggs
+					//, all_money: 0
+				};
+				var tian = [];
+				for (var i = 0; i < data.soil_list.length; i++) {
+					var d = data.soil_list[i].enabled=="1";
+					var a = data.soil_list[i].henroost_a;
+					var b = data.soil_list[i].henroost_b;
+					var c = data.soil_list[i].chickens;
+					if (a && a!=null && a!='null') {
+						j_data.ji++
+					}
+					if (b && b!=null && b!='null') {
+						j_data.ji++
+					}
+					for(var j=0;j<c.length;j++){
+						if(c[j].is_dead && c[j].is_dead != "0"){
+							j_data.die_ji++;
+							c.splice(i,1);
+							i--;
+						}
+					}
+					if (d) {
+						j_data.di++;
+					}
+
+					tian[i] = {
+						"enabled": d,
+						"henroost_a": a,
+						"henroost_b": b,
+						"chickens": c
+					}
+				}
+
+				
+				_this.j_data = j_data;
+				_this.tian = tian;
+				_this.recommand_list = data.recommand_list.slice(0,8);
 				
 				var s_time = 0;
 				if (_this.j_data.friend > 0) {
@@ -77,19 +109,9 @@ new Vue({
 					
 				}
 			},
-			error: function (){}
-		});
-		ajax({
-			url: "http://localhost/onechicken/public/home/inface/get_friend.txt",
-			data: {
-				"user_id": user_id
-			},
-			type: "post",
-			success: function (data){
-				data = eval('('+data+')');
-				_this.s_friend = data.data.slice(0,8);
-			},
-			error: function (){}
+			error: function (){
+				_this.iswaiting = false;
+			}
 		});
 
 	},
@@ -97,15 +119,17 @@ new Vue({
 		set_ji_di: function (type){
 			if (type == 'ji') {
 				for (var i = 0; i < this.tian.length; i++) {
-					if (this.tian[i].ji.length<2) {
-						this.tian[i].ji.push({dan:0});
+					if (this.tian[i].chickens.length<2) {
+						this.tian[i].chickens.push({
+							no_get_eggs: "0"
+						});
 						break;
 					}
 				}
 			}else if(type == 'di'){
 				for (var i = 0; i < this.tian.length; i++) {
-					if (this.tian[i].isOpen != 1) {
-						this.tian[i].isOpen = 1;
+					if (!this.tian[i].enabled) {
+						this.tian[i].enabled = true;
 						break;
 					}
 				}
@@ -116,23 +140,26 @@ new Vue({
 		},
 		put_dan: function (j,index,index2){
 			var _this = this;
-			if (j.dan>0) {
+			if (j.no_get_eggs>0) {
+				_this.iswaiting = true;
 				ajax({
-					url: "http://localhost/onechicken/public/home/inface/put_dan.txt",
+					url: "",
 					data: {
-						"user_id": user_id,
-						"num_di": index,
-						"num_ji": index2
+						"userid": userid,
+						"id": j.id,
+                        "soil_id": j.soil_id,
+                        "user_id": j.user_id,
+                        "soil_henroost": j.soil_henroost
 					},
 					type: "post",
 					success: function(data){
-						data = eval('('+data+')');
-						if (!data.msg) {
-							_this.j_data.dan += 5;
-							_this.tian[index].ji[index2].dan = 0;
-						}
+						_this.iswaiting = false;
+						_this.j_data.dan += 5;
+						_this.tian[index].chickens[index2].no_get_eggs = 0;
 					},
-					error: function (){}
+					error: function (){
+						_this.iswaiting = false;
+					}
 				})
 			}
 		},
@@ -146,29 +173,31 @@ new Vue({
 		},
 		mai:function(item,bool){
 			var _this = this;
-			if (item.isOpen) {
-				if (item.ji.length<2) {
-					if (!bool && item.ji.length==1 && item.ji[0].dan>0) {return };
+			if (item.enabled) {
+				if (item.chickens.length<2) {
+					if (!bool && item.chickens.length==1 && item.chickens[0].no_get_eggs>0) {return };
 					if (window.confirm('是否花100只蛋买一只鸡?')) {
 						
 						if (this.j_data.dan >= 100) {
+							_this.iswaiting = true;
 							ajax({
-								url: "http://localhost/onechicken/public/home/inface/buy_ji_di.txt",
+								url: "",
 								data: {
-									"user_id": user_id,
+									"userid": userid,
 									"buy_ji": 1
 								},
 								type: "post",
 								success: function (data){
+									_this.iswaiting = false;
 									data = eval('('+data+')');
-									if (!data.msg) {
-										_this.j_data.dan -= 100;
-										_this.j_data.ji += 1;
-										_this.show_msg(1,'你已拥有一只超生产力的母鸡！');
-										_this.set_ji_di('ji');
-									}
+									_this.j_data.dan -= 100;
+									_this.j_data.ji += 1;
+									_this.show_msg(1,'你已拥有一只超生产力的母鸡！');
+									_this.set_ji_di('ji');
 								},
-								error: function (){}
+								error: function (){
+									_this.iswaiting = false;
+								}
 							});
 							
 						}else{
@@ -179,23 +208,25 @@ new Vue({
 			}else{
 				if (window.confirm('是否花10只蛋买一块地?')) {
 					if (this.j_data.dan >= 10) {
+						_this.iswaiting = true;
 						ajax({
-							url: "http://localhost/onechicken/public/home/inface/buy_ji_di.txt",
+							url: "",
 							data: {
-								"user_id": user_id,
+								"userid": userid,
 								"buy_di": 1
 							},
 							type: "post",
 							success: function (data){
+								_this.iswaiting = false;
 								data = eval('('+data+')');
-								if (!data.msg) {
-									_this.j_data.dan -= 10;
-									_this.j_data.di += 1;
-									_this.show_msg(1,'你已永久拥有一块养鸡的地！');
-									_this.set_ji_di('di');
-								}
+								_this.j_data.dan -= 10;
+								_this.j_data.di += 1;
+								_this.show_msg(1,'你已永久拥有一块养鸡的地！');
+								_this.set_ji_di('di');
 							},
-							error: function (){}
+							error: function (){
+								_this.iswaiting = false;
+							}
 						});
 						
 					}else{
@@ -209,7 +240,7 @@ new Vue({
 				if (this.j_data.ji==20) {return}
 				var cur = 0;
 				for (var i = 0; i < this.tian.length; i++) {
-					if (this.tian[i].ji.length<2) {
+					if (this.tian[i].chickens.length<2) {
 						cur = i;
 						break;
 					}
@@ -219,7 +250,7 @@ new Vue({
 				if (this.j_data.di==10) {return}
 				var cur = 0;
 				for (var i = 0; i < this.tian.length; i++) {
-					if (this.tian[i].isOpen != 1) {
+					if (!this.tian[i].enabled) {
 						cur = i;
 						break;
 					}
@@ -237,55 +268,84 @@ new Vue({
 				}else if(this.c_money < 10){
 					this.show_msg(0,'最少充值10元');
 				}else if (window.confirm('充值'+this.c_money+'元？')) {
+					_this.iswaiting = true;
 					ajax({
-						url: "http://localhost/onechicken/public/home/inface/put_cz.txt",
+						url: "/api/pay",
 						data: {
-							"user_id": user_id,
+							"userid": userid,
 							"money": this.c_money
 						},
 						type: "post",
 						success: function (data){
-							data = eval('('+data+')');
-							if (!data.msg) {
+							_this.iswaiting = false;
+							if(data){
 								_this.show_msg(1,'充值'+_this.c_money+'元成功');
 								_this.j_data.dan += _this.c_money;
 								setTimeout(function(){
 									_this.show_msg(1,'您已获得'+_this.c_money+'只鸡蛋');
 								},2000);
 							}
+							
 						},
-						error: function (){}
+						error: function (){
+							_this.iswaiting = false;
+						}
 					});
 				}
 			}else if(item == 2){
-				var t2 = Math.floor(this.c_money/10) != Math.ceil(this.c_money/10);
+				this.is_tx = true;
 
-				if (this.j_data.dan < this.c_money) {
-					this.show_msg(0,'鸡蛋不足'+this.c_money+'个,无法提现');
-				}else if(this.c_money < 10){
-					this.show_msg(0,'最少提现10个鸡蛋');
-				}else if(t2){
-					this.show_msg(0,'请按10个蛋的倍数进行提现');
-				}else if (window.confirm('提现'+this.c_money+'个鸡蛋')) {
-					ajax({
-						url: "http://localhost/onechicken/public/home/inface/put_tx.txt",
-						data: {
-							"user_id": user_id,
-							"money": this.c_money
-						},
-						type: "post",
-						success: function (data){
-							data = eval('('+data+')');
-							if (!data.msg) {
-								_this.show_msg(1,'提现'+_this.c_money+'元成功，请等待客服处理');
-								_this.j_data.dan -= _this.c_money;
-								_this.j_data.all_money += _this.c_money;
-							}
-						},
-						error: function (){}
-					});
+			}
+		},
+		tx: function(){
+			var _this = this;
+			var t2 = Math.floor(this.t_money/10) != Math.ceil(this.t_money/10);
+			if (this.j_data.dan < this.t_money) {
+				this.show_msg(0,'鸡蛋不足'+this.t_money+'个,无法提现');
+			}else if(this.t_money < 10){
+				this.show_msg(0,'最少提现10个鸡蛋');
+			}else if(t2){
+				this.show_msg(0,'请按10个蛋的倍数进行提现');
+			}else{
+				if (!this.tx_name) {
+					this.show_msg(0,'请填写姓名');
 				}
+				if (!/^\d{8,24}$/.test(this.tx_card)) {
+					this.show_msg(0,'请填写正确的银行卡号');
+				}
+				_this.iswaiting = true;
+				ajax({
+					url: "/api/tixian",
+					data: {
+						"userid": userid,
+						"name": this.tx_name,
+						"money": this.t_money,
+						"brank_num": this.tx_card
+					},
+					type: "post",
+					success: function (data){
+						_this.iswaiting = false;
+						if (data) {
+							_this.show_msg(1,'提现'+_this.t_money+'元成功，请等待客服处理');
+							_this.j_data.dan -= _this.t_money;
+							_this.j_data.all_money += _this.t_money;
+						}
+					},
+					error: function (){
+						_this.iswaiting = false;
+					}
+				});
 			}
 		}
 	}
 })
+
+
+function getCookie(e)
+{
+	for(var t=document.cookie,i=t.split("; "),n=0;n<i.length;n++){
+		var a=i[n].split("=");
+		if(a[0]==e)return unescape(a[1])
+	}
+	return ""
+}
