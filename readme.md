@@ -26,8 +26,8 @@
 |headimgurl|string|缩略图地址|
 |eggs|int|用户总蛋数|
 |today_eggs|int|用户今天拾取的蛋的数量|
-|recommand_eggs|int|用户昨天收获的推荐人蛋的数量|
-|money|decimal|<del>用户的金额,此处应该不需要此字段</del>|
+|recommand_eggs|int|用户收获的推荐人蛋的数量|
+|money|decimal|用户已经提现的金额|
 |soil_list|list|土地信息，具体信息请看 `soil_list`数据表说明|
 |recommand_list|list|推荐者列表，具体请看`recommand_list`数据表说明|
 
@@ -195,3 +195,4 @@
     "msg": ""
 }
 ```
+

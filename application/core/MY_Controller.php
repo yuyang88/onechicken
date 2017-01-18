@@ -28,7 +28,7 @@ class MY_Controller extends CI_Controller {
      * @return string
      */
     protected function send_data($status,$data,$msg){
-        $this->output->set_content_type('application/javascript', 'UTF-8');
+        header("Content-type: application/json");
         $result = json_encode([
             "status"=>$status,
             "data"=>$data,

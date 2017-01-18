@@ -24,7 +24,6 @@ class User_model extends CI_Model {
         $this->userinfo = $userinfo;
         $userinfo['soil_list'] = $soils;
         $userinfo['recommand_list'] = $recommand_list;
-        $userinfo['total_eggs'] = $userinfo['today_eggs'];
         return $userinfo;
     }
 
@@ -35,10 +34,17 @@ class User_model extends CI_Model {
      * @throws Exception
      */
     private function _userinfo($userid){
-        $userinfo = $this->db->query("select wu.id,wu.nickname,wu.headimgurl,ua.eggs,ua.today_eggs,ua.money,ua.recommand_eggs,ua.total_eggs,ua.soils from chicken_wechat_user as wu inner join user_addition as ua on ua.user_id = wu.id where wu.id = ? limit 1",[$userid])->row_array();
+        $userinfo = $this->db->query("select wu.id,wu.nickname,wu.headimgurl,ua.eggs,ua.recommand_eggs,ua.total_eggs,ua.soils from chicken_wechat_user as wu inner join user_addition as ua on ua.user_id = wu.id where wu.id = ? limit 1",[$userid])->row_array();
         if(!$userinfo){
             throw new Exception("用户不存在");
         }
+        $userinfo['today_eggs'] = $this->db->query("select sum(`eggs`) as c from eggs where user_id = ? and `date` = ?",[$userid,date("Y-m-d")])->row_array()['c'];
+        if($userinfo['today_eggs'] == null){
+            $userinfo['today_eggs'] = 0;
+        }
+        $userinfo['money'] =  $this->db->query("select sum(`money`) m from extract where wu_id = ? and status = 2",$userinfo['id'])->row_array()['m'];
+        $userinfo['money'] || $userinfo['money']  = 0;
+        $userinfo['total_eggs'] || $userinfo['total_eggs'] = 0;
         return $userinfo;
     }
     /**
@@ -247,7 +253,7 @@ class User_model extends CI_Model {
      * @param $message
      */
     public function add_new_msg($userid,$message){
-        $this->db->insert('user_messages',["user_id"=>$userid,"message">$message]);
+        $this->db->query("insert into user_messages (`user_id`,`message`) values(?,?)",[$userid,$message]);
     }
 
 
@@ -258,12 +264,18 @@ class User_model extends CI_Model {
      * 更新推荐人的蛋为昨天拾取的蛋的总数*0.1
      */
     public function product_eggs(){
+        $this->load->driver('cache');
+        $cache_key = "crontab_eggs";
+        $cacheinfo = $this->cache->file->get($cache_key);
+        if($cacheinfo == date("Y-m-d")){
+            die('今天已经运行过生蛋任务');
+        }
         $this->db->trans_begin();
         $this->db->query("update chicken set no_get_eggs = no_get_eggs + 5 , total_eggs = total_eggs + 5 where is_dead = 0 and total_eggs < 150 ");
         $this->db->query("update chicken set is_dead = 2 where is_dead = 0 and total_eggs >= 150");
 
         //先更新所有今天获取推荐的蛋的数量为0,将昨天获取推荐的蛋的数量+到总数上
-        $this->db->query("update user_addition set recommand_total = recommand_eggs, recommand_eggs = 0");
+        $this->db->query("update user_addition set recommand_total_eggs = recommand_total_eggs + recommand_eggs, recommand_eggs = 0");
         //更新昨天拾取蛋的10% 到推荐者帐户中
         $lastday_eggs = $this->db->query("select sum(e.eggs)*0.1 as eggs ,u.recommand from eggs as e inner join user_addition as u on u.user_id = e.user_id where e.`date` = ? group by u.recommand",[date("Y-m-d",strtotime("-1 day"))])->result_array();
         foreach ($lastday_eggs as $egg){
@@ -271,5 +283,6 @@ class User_model extends CI_Model {
             $this->add_new_msg($egg['recommand'],'恭喜你，通过你的小伙伴分享，你已获得了'.$egg['eggs'].'个蛋。');
         }
         $this->db->trans_commit();
+        $this->cache->file->save($cache_key,date("Y-m-d"),864000);
     }
 }
