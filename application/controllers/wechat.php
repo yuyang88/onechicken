@@ -27,6 +27,10 @@ class wechat extends CI_Controller
 
             if($recommand_code)
             {
+                $this->load->model('topup_model');
+                $sql = "update chicken_wehcat_user set recommand_num = recommand+1 WHERE recommand_code = $recommand_code";
+                $this->topup_model->addExtract($sql);
+
                 $parentInfo = $this->token_model->getid($recommand_code);
                 if($parentInfo)
                     $parent_id = $parentInfo['id'];

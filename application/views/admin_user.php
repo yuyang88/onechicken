@@ -165,15 +165,22 @@
                 <th>提现金额</th>
             </tr>
             <tr>
-                <td>2017-01-16 17:31:41</td>
-                <td>登录</td>
-                <td>1976161</td>
-                <td>无锡</td>
-                <td>176****0809</td>
-                <td>用户</td>
-                <td>Android</td>
-                <td>DEV</td>
-            </tr>                </table>
+                <?php foreach ($list as $name):?>
+
+                    <td><?= $name['nickname']?></td>
+                    <td><?= $name['top_up']?></td>
+                    <td><?= $name['sex']?></td>
+                    <td><?= $name['province']?></td>
+                    <td><?= $name['city'] ?></td>
+                    <td><?= $name['chickens'] ?></td>
+                    <td><?= $name['soils'] ?></td>
+                    <td><?= $name['total_eggs'] ?></td>
+                    <td><?= $name['recommand_num'] ?></td>
+                    <td><?= $name['tixian'] ?></td>
+
+                <?php endforeach; ?>
+            </tr>
+        </table>
     </div>
     <div class="container-fluid text-center">
         <nav>
