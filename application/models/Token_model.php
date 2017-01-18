@@ -90,6 +90,28 @@ class token_model extends CI_Model
     {
         $save['user_id'] = $userId;
         $this->db->insert('soil',$save);
+        $this->db->insert('soil',$save);
+        $this->db->insert('soil',$save);
+        $this->db->insert('soil',$save);
+        $this->db->insert('soil',$save);
+        $this->db->insert('soil',$save);
+        $this->db->insert('soil',$save);
+        $this->db->insert('soil',$save);
+        $this->db->insert('soil',$save);
+        $this->db->insert('soil',$save);
+//        $saveS[] = [
+//            $save,
+//            $save,
+//            $save,
+//            $save,
+//            $save,
+//            $save,
+//            $save,
+//            $save,
+//            $save,
+//            $save,
+//        ];
+//        $this->db->insert_batch('soil',$saveS);
         $save['recommand'] = $parentId;
         $save['recommand_code'] = $recommand_code;
         $this->db->insert('user_addition',$save);
