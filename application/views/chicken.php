@@ -21,11 +21,11 @@
     <div class="tian">
         <a href="javascript:;" class="wawa"></a>
         <ul class="tian-m">
-            <li @click="mai(item)" :class="item.isOpen?'active':''" v-for="(item,index) in tian">
+            <li @click="mai(item)" :class="item.enabled?'active':''" v-for="(item,index) in tian">
                 <span></span>
-                <i :class="'numji-'+item.ji.length">
+                <i :class="'numji-'+item.chickens.length">
                     <i></i>
-                    <em :class="j.dan>0?'active':''" @click="put_dan(j,index,index2)" v-for="(j,index2) in item.ji"></em>
+                    <em :class="j.no_get_eggs>0?'active':''" @click="put_dan(j,index,index2)" v-for="(j,index2) in item.chickens"></em>
                 </i>
             </li>
         </ul>
@@ -73,9 +73,9 @@
 
     <div @click="isTuijian=false" :class="['tuijian',isTuijian?'':'hide']">
         <ul class="tuijian-f">
-            <li v-for="s_f in s_friend">
-                <img :src="s_f.img" />
-                <p>{{s_f.name}}</p>
+            <li v-for="s_f in recommand_list">
+                <img :src="s_f.headimgurl" />
+                <p>{{s_f.nickname}}</p>
             </li>
         </ul>
     </div>
@@ -95,6 +95,14 @@
     </div>
 
 
+    <div @click="is_tx=false" :class="['s_input-mask',is_tx?'':'hide']"></div>
+    <div :class="['s_input',is_tx?'':'hide']">
+        <input placeholder="请输入提款金额" v-model="t_money" type="tel" />
+        <input placeholder="请输入姓名" v-model="tx_name" type="text" />
+        <input placeholder="请输入卡号" v-model="tx_card" type="tel" />
+        <a @click="tx()" class="a_c" href="javascript:;"></a>
+    </div>
+
     <div :class="['chicken-t',a_message.isClose?'hide':'']">
         <div @click="a_message.isClose=true" class="t-mask"></div>
         <div :class="[a_message.isStatus==1?'t-success':'t-error']">
@@ -102,12 +110,9 @@
             <a @click="a_message.isClose=true" class="a_c" href="javascript:;"></a>
         </div>
     </div>
-
-    <div v-if="false" class="v-loading">
-        <svg class="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
-            <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
-        </svg>
-    </div>
+   
+    <div v-if="iswaiting" class="loading-spinner-mask"></div>
+    <div v-if="iswaiting" class="loading-spinner"></div>
 
 </article>
 
@@ -139,9 +144,9 @@
         wx.onMenuShareWeibo(shareData);
     });
 
-    var user_id = '此处填写php变量';
 </script>
 
 <script type="text/javascript" src="http://h5.91marryu.com//onechicken/public/home/js/chicken.js"></script>
+
 </body>
 </html>
