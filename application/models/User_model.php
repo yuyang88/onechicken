@@ -106,7 +106,10 @@ class User_model extends CI_Model {
         if(!$all_msg){
             $query .= " and is_read = 0";
         }
-        return $this->db->query($query,[$userid])->result_array();
+
+        $result = $this->db->query($query,[$userid])->result_array();
+        $this->db->query("update user_messages set is_read = 1 where user_id = ?",[$userid]);
+        return $result;
     }
 
 
