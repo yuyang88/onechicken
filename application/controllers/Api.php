@@ -98,8 +98,7 @@ class Api extends MY_Controller {
         $data['create_time'] = time();
 
         /*写入支付记录*/
-        $dataObj = $this->token_model->setData($data);
-        $this->topup_model->save($dataObj);
+        $this->db->insert('top_up',$data);
 
         $this->pay->pays($memLink,$serLink,$money,$order);
     }

@@ -56,9 +56,12 @@ class token_model extends CI_Model
             'parent_code'=>$recommand_code,
             'parent_id'=>$parent_id,
         ];
-        $this->load-model('chicken_wechat_user');
-        $this->chicken_wechat_user->save($saveData);
 
+        $info = $this->db->query("select * from chicken_wechat_user where wechat_id = ?",[$userInfo['openid']])->row_array();
+        if($info)
+            return $info;
+
+        $this->db->insert('chicken_wechat_user',$saveData);
         return $saveData;
 
         //获取code
@@ -76,18 +79,20 @@ class token_model extends CI_Model
 
     public function getWuId($wechat_id)
     {
-        return $this->db->query("select * from chicken_wechat_user WHERE wechat_id = ? limit 1 order by create_time DESC ",[$wechat_id])->row_array();
+        return $this->db->query("select * from chicken_wechat_user WHERE wechat_id = ? order by create_time DESC limit 1  ",[$wechat_id])->row_array();
     }
 
     public function getid($recommand_code)
     {
-        return $this->db->query("select * from chicken_wechat_user WHERE recommand_code = ? limit 1 order by create_time DESC ",[$recommand_code])->row_array();
+        return $this->db->query("select * from chicken_wechat_user WHERE recommand_code = ?  order by create_time DESC limit 1",[$recommand_code])->row_array();
     }
 
     public function _getCode($link = "")
     {
-        if($link)
-            curlGet(sprintf(self::oAuthInfo,self::appId,$link));
+        if($link) {
+            $target = (sprintf(self::oAuthInfo, self::appId, $link));
+            header("Location:$target");
+        }
 
 
         return '跳转链接未传入';
