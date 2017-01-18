@@ -18,8 +18,12 @@ class wechat extends CI_Controller
 
     public function getCode()
     {
+        session_start();
         if($_SESSION['user_id'])
-            header("Location:http://h5.91marryu.com/onechicken/index.php/wechat/game");
+        {
+            header("Location:http://h5.91marryu.com/onechicken/index.php/wechat/game?user_id=".$_SESSION['user_id']);
+            exit;
+        }
 
         $recommand_code = '';
         $parent_id = 0;
@@ -41,21 +45,29 @@ class wechat extends CI_Controller
 
             $data = $this->token_model->getWeChatOpenId($_GET['code'],$recommand_code,$parent_id);
             if($_COOKIE['user_id'])
-                header("Location:http://h5.91marryu.com/");
+            {
+                header("Location:http://h5.91marryu.com/onechicken/index.php/wechat/game?user_id=" . $_COOKIE['user_id']);
+                exit;
+            }
 
             if($data) {
                 $userinfo= $this->token_model->getWuId($data['wechat_id']);
                 setcookie('user_id',$userinfo['id'],time()+8640000);
                 $_SESSION['user_id'] = $userinfo['id'];
-                return $data;
+                header("Location:http://h5.91marryu.com/onechicken/index.php/wechat/game?user_id=".$userinfo['id']);
+                exit;
             }
         }
 
         $this->token_model->_getCode("http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."?callback=callback111");
     }
 
+
     public function game()
     {
+        if($_GET['user_id'])
+            setcookie('user_id',$_GET['user_id'],time()+8640000);
+
         $this->load->view('chicken');
     }
 
