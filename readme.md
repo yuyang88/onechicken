@@ -58,15 +58,140 @@
 |nickname|string|用户昵称|
 |headimgurl|string|头像的URL地址|
 
+==================
+### 获取用户信息的测试数据
+```javascript
+{
+    "status": true,
+    "data": {
+        "id": "1",
+        "nickname": "he-test",
+        "headimgurl": "http://www.baidu.com",
+        "eggs": "5",
+        "today_eggs": "1",
+        "money": "332.00",
+        "recommand_eggs": "0",
+        "total_eggs": 1,
+        "soil_list": [
+            {
+                "id": "1",
+                "enabled": "1",
+                "henroost_a": "1",
+                "henroost_b": "2",
+                "create_at": "2017-01-17 00:52:52",
+                "user_id": "1",
+                "chickens": [
+                    {
+                        "id": "1",
+                        "soil_id": "1",
+                        "user_id": "1",
+                        "soil_henroost": "a",
+                        "total_eggs": "5",
+                        "is_dead": "0",
+                        "create_at": "2017-01-17 01:00:56",
+                        "no_get_eggs": "3"
+                    }
+                ]
+            },
+            {
+                "id": "2",
+                "enabled": "1",
+                "henroost_a": "3",
+                "henroost_b": null,
+                "create_at": "2017-01-17 00:53:06",
+                "user_id": "1",
+                "chickens": []
+            },
+            {
+                "id": "3",
+                "enabled": "0",
+                "henroost_a": null,
+                "henroost_b": "4",
+                "create_at": "2017-01-17 00:53:21",
+                "user_id": "1"
+            }
+        ],
+        "recommand_list": [
+            {
+                "id": "2",
+                "nickname": "he_recommand",
+                "headimgurl": "http://www.a.com"
+            }
+        ]
+    },
+    "msg": "获取信息成功"
+}
+```
 
 
 
 
 
 
+## 获取微信分享数据
+
+### 提交信息
+|名称|值|说明|
+|---|---|---|
+|URL|http://domain/api/share||
+|方法|post||
+|参数|userid|用户ID|
+
+### 返回数据结构
+|名称|类型|说明|
+|----|----|----|
+|id|int|用户ID|
+|access_token|string|昵称|
+|signature|string|缩略图地址|
+|recommand_code|string|推荐吗|
 
 ==================
 ### 获取用户信息的测试数据
-`
-{"status":true,"data":{"id":"1","nickname":"he-test","headimgurl":"http:\/\/www.baidu.com","eggs":"5","today_eggs":"1","money":"332.00","recommand_eggs":"0","total_eggs":1,"soil_list":[{"id":"1","enabled":"1","henroost_a":"1","henroost_b":"2","create_at":"2017-01-17 00:52:52","user_id":"1","chickens":[{"id":"1","soil_id":"1","user_id":"1","soil_henroost":"a","total_eggs":"5","is_dead":"0","create_at":"2017-01-17 01:00:56","no_get_eggs":"3"}]},{"id":"2","enabled":"1","henroost_a":"3","henroost_b":null,"create_at":"2017-01-17 00:53:06","user_id":"1","chickens":[]},{"id":"3","enabled":"0","henroost_a":null,"henroost_b":"4","create_at":"2017-01-17 00:53:21","user_id":"1"}],"recommand_list":[{"id":"2","nickname":"he_recommand","headimgurl":"http:\/\/www.a.com"}]},"msg":"\u83b7\u53d6\u4fe1\u606f\u6210\u529f"}`
+```javascript
+{
+    "status": true,
+    "data": {
+        "id": "1",
+        "access_token": "he-test",
+        "signature": "http://www.baidu.com",
+        "recommand_code": "http://www.baidu.com"
+    },
+    "msg": "获取信息成功"
+}
+```
 
+
+## 充值接口
+
+### 提交信息
+|名称|值|说明|
+|---|---|---|
+|URL|http://domain/api/pay||
+|方法|post||
+|参数|userid|用户ID|
+|参数|money|充值金额|
+
+
+
+
+## 提现接口
+
+### 提交信息
+|名称|值|说明|
+|---|---|---|
+|URL|http://domain/api/tixian||
+|方法|post||
+|参数|userid|用户ID|
+|参数|brank_num|银行卡号|
+|参数|name|姓名|
+|参数|money|提现金额|
+
+==================
+### 获取用户信息的测试数据
+```javascript
+{
+    "status": true,
+    "data": [],
+    "msg": ""
+}
+```

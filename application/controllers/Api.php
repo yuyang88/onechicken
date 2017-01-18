@@ -90,7 +90,7 @@ class Api extends MY_Controller {
         /*服务器通知地址*/
         $serLink = "http://h5.91marryu.com/onechicken/api/payCall";
         /*金额*/
-        $money = $_GET['money'];
+        $money = $_POST['money'];
         /*订单号*/
         $data['order_num'] = $order= 'Mer' . date('Ymdhis').rand(1,99999);
         /*微信用户id*/
@@ -110,11 +110,18 @@ class Api extends MY_Controller {
         $data = $this->_addTopUp();
         if($data && $data['message'])
         {
-            $data['money']=1;
-            $data['order_num']=1;
+//            $data['money']=1;
+//            $data['order_num']=1;
             /*反写*/
             $this->load->model('topup_model');
+            $sql1 = "select * from top_up WHERE order_num = ".$data['order_num'];
+            $orderInfo = $this->topup_model->querySql($sql1);
             $info = $this->topup_model->writeMoney($data['money'],$data['order_num']);
+            $money = $data['money'];
+            $sql = "update chicken_wehcat_user set tou_up = tou_up+$money WHERE id = ".$orderInfo['wu_id'];
+            $sql2 = "update user_addition set total_eggs = total_eggs+$money WHERE id = ".$orderInfo['wu_id'];
+            $this->topup_model->addExtract($sql);
+            $this->topup_model->addExtract($sql2);
             if($info)
                 true;
                 //反写换鸡蛋
@@ -200,12 +207,12 @@ class Api extends MY_Controller {
     {
         /*银行卡号brank_num 姓名name 提现金额money wu_id create_time*/
         $this->load->model('topup_model');
-        $name = $_POST['name'];
+        $name = "'".$_POST['name']."'";
         $brank_num = $_POST['brank_num'];
         $money = $_POST['money'];
         $wu_id = $_POST['userid'];
         $create_time = time();
-        $sql = " INSERT INTO table_name (`name`,`brank_num`,`money`,`wu_id`,`create_time`) VALUES ($name,$brank_num,$money,$wu_id,$create_time)";
+        $sql = " INSERT INTO extract (`name`,`brank_num`,`money`,`wu_id`,`create_time`) VALUES ( $name,$brank_num,$money,$wu_id,$create_time)";
         $info = $this->topup_model->addExtract($sql);
         if($info)
             $this->send_data(true);

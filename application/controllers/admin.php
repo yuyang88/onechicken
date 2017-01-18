@@ -7,6 +7,8 @@ class admin extends CI_Controller {
     private $_cookieName = 'aid';
     private $_cookieUserName = 'email';
     private $_cookieTime = 8640000;
+
+    private $_pageNum = 2;
     /**
      * Index Page for this controller.
      *
@@ -22,6 +24,7 @@ class admin extends CI_Controller {
      * map to /index.php/welcome/<method_name>
      * @see https://codeigniter.com/user_guide/general/urls.html
      */
+
     public function index()
     {
         if($_POST)
@@ -33,7 +36,7 @@ class admin extends CI_Controller {
             {
                 setcookie($this->_cookieName,$userInfo['id'],time()+$this->_cookieTime);
                 setcookie($this->_cookieUserName,$userInfo['email'],time()+$this->_cookieTime);
-                header('location:http://localhost/onechicken/index.php/admin/ok');
+                header('location:http://h5.91marryu.com//onechicken/index.php/admin/ok');
             }
         }
 
@@ -46,18 +49,34 @@ class admin extends CI_Controller {
         $this->load->library('pagination');
         $this->load->model('topup_model');
 
-        $config['base_url'] = 'http://localhost/onechicken/index.php/admin/show/page/';
-        $config['total_rows'] = 200;
-        $config['per_page'] = 20;
+        $config['base_url'] = 'http://h5.91marryu.com//onechicken/index.php/admin/show/page/';
+        $countSql = " SELECT count(*) from chicken_wechat_user wu LEFT JOIN user_addition ua ON wu.id=ua.user_id";
+        $count= $this->topup_model->querySql($countSql);
+
+        $config['total_rows'] = $count['count(*)'];
+        $config['per_page'] = $this->_pageNum;
         $config['enable_query_strings'] = true;
 
         $this->pagination->initialize($config);
 
         $data['page'] =  $this->pagination->create_links();
         $page = intval($_GET['page']);
-        $sql = "select * from chicken_wechat_user limit $page, 2";
-        $data['list'] = $this->topup_model->querySql($sql);
-
+        $sql = " SELECT wu.*,ua.eggs total_eggs,ua.soils,ua.chickens from chicken_wechat_user wu LEFT JOIN user_addition ua ON wu.id=ua.user_id   limit $page, $this->_pageNum";
+        $list= $this->topup_model->querySql($sql);
+        foreach ($list as $key=>$value)
+        {
+            if($value['create_time'])
+            {
+                $list[$key]['create_time'] = date('Y-m-d H:i',$value['create_time']);
+            }
+            if($value['sex'] == 2)
+            {
+                $list[$key]['sex'] = '女';
+            }else{
+                $list[$key]['sex'] = '男';
+            }
+        }
+        $data['list'] = $list;
         $this->load->view('admin_user',$data);
 //        $this->load->view('admin_login');
     }
@@ -65,19 +84,25 @@ class admin extends CI_Controller {
 
     public function tixian()
     {
+        error_reporting(0);
         $this->load->library('pagination');
         $this->load->model('topup_model');
 
-        $config['base_url'] = 'http://localhost/onechicken/index.php/admin/tixian/page/';
-        $config['total_rows'] = 200;
-        $config['per_page'] = 20;
+        $countSql = "select count(*) from extract ";
+        $count  = $this->topup_model->querySql($countSql);
+
+        $config['base_url'] = 'http://h5.91marryu.com//onechicken/index.php/admin/tixian/page/';
+        $config['total_rows'] = $count['count(*)'];
+        $config['per_page'] = $this->_pageNum;
         $config['enable_query_strings'] = true;
+
+
 
         $this->pagination->initialize($config);
 
         $data['page'] =  $this->pagination->create_links();
         $page = intval($_GET['page']);
-        $sql = "select * from extract limit $page, 2";
+        $sql = "select * from extract limit $page, $this->_pageNum";
         $list = $this->topup_model->querySql($sql);
 
         foreach ($list as $key=>$value)
@@ -90,7 +115,8 @@ class admin extends CI_Controller {
 
             if($value['status'] == 1)
             {
-                $list[$key]['status'] = "<a href='http://localhost/onechicken/index.php/admin/ok/id/'.$id>未处理</a>";
+                $link = "http://h5.91marryu.com//onechicken/index.php/admin/ok?id=$id";
+                $list[$key]['status'] = "<a href=$link>未处理</a>";
             }
             else
             {
@@ -107,12 +133,21 @@ class admin extends CI_Controller {
     {
         setcookie($this->_cookieUserName,'',-1);
         setcookie($this->_cookieName,'',-1);
-        header('location:http://localhost/onechicken/index.php/admin/index');
+        header('location:http://h5.91marryu.com//onechicken/index.php/admin/index');
 
     }
 
     public function ok()
     {
         $id = $_GET['id'];
+        $this->load->model('topup_model');
+
+        try{
+            $this->topup_model->tixian($id);
+            $this->load->view('success');
+        }catch (Exception $e){
+            header('location:http://h5.91marryu.com//onechicken/index.php/admin/tixian');
+        }
+
     }
 }

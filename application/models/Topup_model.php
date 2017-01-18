@@ -31,4 +31,19 @@ class Topup_model extends CI_Model
     {
         return $this->db->query($sql)->result_array();
     }
+
+
+    public function tixian($id){
+        $this->db->trans_begin();
+        $data = $this->db->query("select * from extract where id = ? and status = 1 ",[$id])->row_array();
+        if(!$data){
+            throw  new Exception("已经处理过了");
+        }
+
+        $this->db->query("update chicken_wechat_user set tixian = tixian+".$data['money']." where id = ".$data['wu_id']);
+        $this->db->query("update extract set money = 0,status = 2 where id = ?",[$id]);
+        $this->db->trans_commit();
+
+        return true;
+    }
 }

@@ -11,26 +11,26 @@
     <title>DashBoard平台登陆</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="http://localhost/onechicken/public/public/Css/admin/bootstrap.css" rel="stylesheet">
+    <link href="http://h5.91marryu.com//onechicken/public/public/Css/admin/bootstrap.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="http://localhost/onechicken/public/public/Css/admin/signin.css" rel="stylesheet">
+    <link href="http://h5.91marryu.com//onechicken/public/public/Css/admin/signin.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <script type="text/javascript" src="http://localhost/onechicken/public/public/Js/jquery.min.js"></script>
-    <!--[if lt IE 9]><script src="http://localhost/onechicken/public/public/Js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <script src="http://localhost/onechicken/public/public/Js/ie-emulation-modes-warning.js"></script>
-    <script src="http://localhost/onechicken/public/public/Js/verify.js"></script>
+    <script type="text/javascript" src="http://h5.91marryu.com//onechicken/public/public/Js/jquery.min.js"></script>
+    <!--[if lt IE 9]><script src="http://h5.91marryu.com//onechicken/public/public/Js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="http://h5.91marryu.com//onechicken/public/public/Js/ie-emulation-modes-warning.js"></script>
+    <script src="http://h5.91marryu.com//onechicken/public/public/Js/verify.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-    <script src="http://localhost/onechicken/public/public/Js/html5shiv.js"></script>
-    <script src="http://localhost/onechicken/public/public/Js/respond.min.js"></script>
+    <script src="http://h5.91marryu.com//onechicken/public/public/Js/html5shiv.js"></script>
+    <script src="http://h5.91marryu.com//onechicken/public/public/Js/respond.min.js"></script>
     <![endif]-->
 </head>
 <body>
 <div class="container">
-    <form class="form-signin" role="form" id="LoginForm" name="LoginForm" method="post" action="http://localhost/onechicken/index.php/admin/index"  onsubmit="return check_login(this)" >
+    <form class="form-signin" role="form" id="LoginForm" name="LoginForm" method="post" action="http://h5.91marryu.com//onechicken/index.php/admin/index"  onsubmit="return check_login(this)" >
         <h2 class="form-signin-heading">平台登录</h2>
         <div class="form-group">
             <input type="text" class="form-control" name="email" value="" required autofocus placeholder="请输入用户名">
@@ -50,6 +50,6 @@
     </form>
 </div> <!-- /container -->
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<script src="http://localhost/onechicken/public/public/Js/ie10-viewport-bug-workaround.js"></script>
+<script src="http://h5.91marryu.com//onechicken/public/public/Js/ie10-viewport-bug-workaround.js"></script>
 </body>
 </html>

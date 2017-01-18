@@ -7,10 +7,10 @@
     <meta content="black" name="apple-mobile-web-app-status-bar-style">
     <meta content="telephone=no" name="format-detection">
     <title>鸡祥如意2017</title>
-    <link rel="stylesheet" type="text/css" href="http://localhost/onechicken/public/home/css/reset.css">
-    <link rel="stylesheet" type="text/css" href="http://localhost/onechicken/public/home/css/chicken.css">
-    <script type="text/javascript" src="http://localhost/onechicken/public/home/js/fastclick.js"></script>
-    <script type="text/javascript" src="http://localhost/onechicken/public/home/js/autosize.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://h5.91marryu.com//onechicken/public/home/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="http://h5.91marryu.com//onechicken/public/home/css/chicken.css">
+    <script type="text/javascript" src="http://h5.91marryu.com//onechicken/public/home/js/fastclick.js"></script>
+    <script type="text/javascript" src="http://h5.91marryu.com//onechicken/public/home/js/autosize.js"></script>
 </head>
 <body>
 <article v-cloak id="chicken" class="main">
@@ -112,8 +112,8 @@
 </article>
 
 <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-<script type="text/javascript" src="http://localhost/onechicken/public/home/js/vue.js"></script>
-<script type="text/javascript" src="http://localhost/onechicken/public/home/js/ajax.js"></script>
+<script type="text/javascript" src="http://h5.91marryu.com//onechicken/public/home/js/vue.js"></script>
+<script type="text/javascript" src="http://h5.91marryu.com//onechicken/public/home/js/ajax.js"></script>
 
 <script type="text/javascript">
     var shareData = {
@@ -142,6 +142,6 @@
     var user_id = '此处填写php变量';
 </script>
 
-<script type="text/javascript" src="http://localhost/onechicken/public/home/js/chicken.js"></script>
+<script type="text/javascript" src="http://h5.91marryu.com//onechicken/public/home/js/chicken.js"></script>
 </body>
 </html>
