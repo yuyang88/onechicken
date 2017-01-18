@@ -34,7 +34,7 @@ class User_model extends CI_Model {
      * @throws Exception
      */
     private function _userinfo($userid){
-        $userinfo = $this->db->query("select wu.id,wu.nickname,wu.headimgurl,ua.eggs,ua.recommand_eggs,ua.total_eggs,ua.soils from chicken_wechat_user as wu inner join user_addition as ua on ua.user_id = wu.id where wu.id = ? limit 1",[$userid])->row_array();
+        $userinfo = $this->db->query("select wu.id,wu.nickname,wu.headimgurl,ua.eggs,ua.recommand_eggs,ua.total_eggs,ua.soils,ua.chickens from chicken_wechat_user as wu inner join user_addition as ua on ua.user_id = wu.id where wu.id = ? limit 1",[$userid])->row_array();
         if(!$userinfo){
             throw new Exception("用户不存在");
         }
@@ -190,7 +190,7 @@ class User_model extends CI_Model {
             $open_soil_id = $soil_id;
             $this->db->query("update soil set enabled = 1 where id = ? and user_id = ?",[$soil_id,$userid]);
         }
-        $this->db->query("update user_addition set total_eggs = total_eggs - 10 where user_id = ?",[$userid]);
+        $this->db->query("update user_addition set total_eggs = total_eggs - 10, soils = soils + 1 where user_id = ?",[$userid]);
 
         $this->add_new_msg($userid,"恭喜你，你已永久拥有一块养鸡的地！");
         $this->db->trans_commit();
@@ -207,7 +207,7 @@ class User_model extends CI_Model {
         if($userinfo['total_eggs'] < 100){
             throw new Exception("没有足够的蛋兑换");
         }
-        if($userinfo['chickens'] >= $userinfo['soils']*2){
+        if($userinfo['chickens'] > $userinfo['soils']*2){
             if($userinfo['soils'] < 10){
                 throw new Exception("您的地不足,请先兑换一块地");
             }else{
@@ -247,6 +247,7 @@ class User_model extends CI_Model {
         }
         $this->db->query($update_soil_sql,[$chicken_id,$userid,$selected_soil]);
         $this->db->query("update user_addition set total_eggs = total_eggs - 100 , chickens = chickens + 1 where user_id = ? ",[$userid]);
+        $this->add_new_msg($userid,"恭喜你，你已拥有一只超生产力的母鸡！");
         $this->db->trans_commit();
         return $selected_soil;
     }
