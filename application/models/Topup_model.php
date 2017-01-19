@@ -41,7 +41,7 @@ class Topup_model extends CI_Model
         }
 
         $this->db->query("update chicken_wechat_user set tixian = tixian+".$data['money']." where id = ".$data['wu_id']);
-        $this->db->query("update extract set money = 0,status = 2 where id = ?",[$id]);
+        $this->db->query("update extract set status = 2 where id = ?",[$id]);
         $this->db->trans_commit();
 
         return true;
