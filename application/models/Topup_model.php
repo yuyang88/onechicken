@@ -32,6 +32,11 @@ class Topup_model extends CI_Model
         return $this->db->query($sql)->result_array();
     }
 
+    public function addLog($table,$data)
+    {
+        return $this->db->insert($table,$data);
+    }
+
 
     public function tixian($id){
         $this->db->trans_begin();

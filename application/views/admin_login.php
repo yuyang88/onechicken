@@ -30,7 +30,7 @@
 </head>
 <body>
 <div class="container">
-    <form class="form-signin" role="form" id="LoginForm" name="LoginForm" method="post" action="http://h5.91marryu.com//onechicken/index.php/admin/index"  onsubmit="return check_login(this)" >
+    <form class="form-signin" role="form" id="LoginForm" name="LoginForm" method="post" action="http://h5.91marryu.com/onechicken/index.php/admin/index"  onsubmit="return check_login(this)" >
         <h2 class="form-signin-heading">平台登录</h2>
         <div class="form-group">
             <input type="text" class="form-control" name="email" value="" required autofocus placeholder="请输入用户名">

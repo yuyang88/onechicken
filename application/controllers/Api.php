@@ -114,6 +114,11 @@ class Api extends MY_Controller {
     public function payCall()
     {
 
+        /*记录充值log*/
+        $paymentResult['log'] = $_REQUEST['paymentResult'];
+
+        $this->load->model('topup_model');
+        $this->topup_model->addLog('log',$paymentResult);
         //todo:反写换鸡蛋
         $data = $this->_addTopUp();
         $this->load->model('token_model');

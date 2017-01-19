@@ -164,9 +164,9 @@
                 <th>邀请成功人数</th>
                 <th>提现金额</th>
             </tr>
-            <tr>
-                <?php foreach ($list as $name):?>
 
+                <?php foreach ($list as $name):?>
+            <tr>
                     <td><?= $name['nickname']?></td>
                     <td><?= $name['top_up']?></td>
                     <td><?= $name['sex']?></td>
@@ -177,9 +177,8 @@
                     <td><?= $name['total_eggs'] ?></td>
                     <td><?= $name['recommand_num'] ?></td>
                     <td><?= $name['tixian'] ?></td>
-
-                <?php endforeach; ?>
             </tr>
+                <?php endforeach; ?>
         </table>
     </div>
     <div class="container-fluid text-center">
