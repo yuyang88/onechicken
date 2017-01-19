@@ -348,6 +348,12 @@ new Vue({
 							_this.show_msg(1,'提现'+_this.t_money+'元成功，请等待客服处理');
 							_this.j_data.dan -= _this.t_money;
 							_this.j_data.all_money += _this.t_money;
+
+							_this.$nextTick(function (){
+								_this.t_money = "";
+								_this.tx_name = "";
+								_this.tx_card = "";
+							});
 						}
 					},
 					error: function (){
