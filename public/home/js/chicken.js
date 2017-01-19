@@ -65,7 +65,7 @@ new Vue({
 					var d = data.soil_list[i].enabled=="1";
 					var a = data.soil_list[i].henroost_a;
 					var b = data.soil_list[i].henroost_b;
-					var c = data.soil_list[i].chickens;
+					var c = data.soil_list[i].chickens || [];
 					if (a && a!=null && a!='null') {
 						j_data.ji++
 					}
