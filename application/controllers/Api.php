@@ -21,9 +21,14 @@ class Api extends MY_Controller {
      * 获取用户信息
      */
     public function info(){
-        $userinfo = $this->user_model->userinfo($this->get_userid());
+        try{
+            $userinfo = $this->user_model->userinfo($this->get_userid());
 
-        $this->send_data(true,$userinfo,$this->_message);
+            $this->send_data(true,$userinfo,$this->_message);
+        }catch (Exception $e){
+            $this->send_data(false,null,$e->getMessage());
+        }
+
     }
 
     /**

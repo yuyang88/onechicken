@@ -34,7 +34,7 @@ class User_model extends CI_Model {
      * @throws Exception
      */
     private function _userinfo($userid){
-        $userinfo = $this->db->query("select wu.id,wu.nickname,wu.headimgurl,ua.eggs,ua.recommand_eggs,ua.total_eggs,ua.soils,ua.chickens from chicken_wechat_user as wu inner join user_addition as ua on ua.user_id = wu.id where wu.id = ? limit 1",[$userid])->row_array();
+        $userinfo = $this->db->query("select wu.id,wu.nickname,wu.headimgurl,ua.eggs,ua.recommand_eggs,ua.total_eggs,ua.soils,ua.chickens,wu.tixian as money from chicken_wechat_user as wu inner join user_addition as ua on ua.user_id = wu.id where wu.id = ? limit 1",[$userid])->row_array();
         if(!$userinfo){
             throw new Exception("用户不存在");
         }
@@ -42,8 +42,8 @@ class User_model extends CI_Model {
         if($userinfo['today_eggs'] == null){
             $userinfo['today_eggs'] = 0;
         }
-        $userinfo['money'] =  $this->db->query("select sum(`money`) m from extract where wu_id = ? and status = 2",$userinfo['id'])->row_array()['m'];
-        $userinfo['money'] || $userinfo['money']  = 0;
+//        $userinfo['money'] =  $this->db->query("select sum(`money`) m from extract where wu_id = ? and status = 2",$userinfo['id'])->row_array()['m'];
+//        $userinfo['money'] || $userinfo['money']  = 0;
         $userinfo['total_eggs'] || $userinfo['total_eggs'] = 0;
         return $userinfo;
     }
