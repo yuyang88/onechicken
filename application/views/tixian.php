@@ -150,17 +150,17 @@
                 <th>创建时间</th>
                 <th>处理状态</th>
             </tr>
-            <tr>
-                <?php foreach ($list as $name):?>
+            <?php foreach ($list as $name):?>
+                <tr>
 
                     <td><?= $name['name']?></td>
                     <td><?= $name['brank_num']?></td>
                     <td><?= $name['money']?></td>
                     <td><?= $name['create_time']?></td>
                     <td><?= $name['status'] ?></td>
+                </tr>
 
-                <?php endforeach; ?>
-            </tr>
+            <?php endforeach; ?>
         </table>
     </div>
     <div class="container-fluid text-center">
