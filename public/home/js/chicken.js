@@ -4,7 +4,10 @@
  * 
  */
 
-var userid = getCookie("userid");
+var userid = getCookie("user_id") || getCookie("userid");
+if (!userid) {
+	window.reload();
+}
 
 new Vue({
 	el: "#chicken",
@@ -54,8 +57,8 @@ new Vue({
 					dan: data.eggs,
 					di: 0,
 					die_ji: 0,
-					friend: data.recommand_eggs
-					//, all_money: 0
+					friend: data.recommand_eggs,
+					all_money: data.money
 				};
 				var tian = [];
 				for (var i = 0; i < data.soil_list.length; i++) {
@@ -143,19 +146,20 @@ new Vue({
 			if (j.no_get_eggs>0) {
 				_this.iswaiting = true;
 				ajax({
-					url: "",
+					url: "api/pickup_eggs",
 					data: {
 						"userid": userid,
-						"id": j.id,
-                        "soil_id": j.soil_id,
-                        "user_id": j.user_id,
-                        "soil_henroost": j.soil_henroost
+						"chicken_id": j.id,
+                        "soil_id": j.soil_id
 					},
 					type: "post",
 					success: function(data){
 						_this.iswaiting = false;
-						_this.j_data.dan += 5;
-						_this.tian[index].chickens[index2].no_get_eggs = 0;
+						data = eval('('+data+')');
+						if (data) {
+							_this.j_data.dan += 5;
+							_this.tian[index].chickens[index2].no_get_eggs = 0;
+						}
 					},
 					error: function (){
 						_this.iswaiting = false;
@@ -181,19 +185,21 @@ new Vue({
 						if (this.j_data.dan >= 100) {
 							_this.iswaiting = true;
 							ajax({
-								url: "",
+								url: "/api/egg2chicken",
 								data: {
-									"userid": userid,
-									"buy_ji": 1
+									"userid": userid
 								},
 								type: "post",
 								success: function (data){
 									_this.iswaiting = false;
 									data = eval('('+data+')');
-									_this.j_data.dan -= 100;
-									_this.j_data.ji += 1;
-									_this.show_msg(1,'你已拥有一只超生产力的母鸡！');
-									_this.set_ji_di('ji');
+									if (data) {
+										_this.j_data.dan -= 100;
+										_this.j_data.ji += 1;
+										_this.show_msg(1,'你已拥有一只超生产力的母鸡！');
+										_this.set_ji_di('ji');
+									}
+									
 								},
 								error: function (){
 									_this.iswaiting = false;
@@ -210,19 +216,22 @@ new Vue({
 					if (this.j_data.dan >= 10) {
 						_this.iswaiting = true;
 						ajax({
-							url: "",
+							url: "/api/enable_soil",
 							data: {
-								"userid": userid,
-								"buy_di": 1
+								"userid": userid
 							},
 							type: "post",
 							success: function (data){
 								_this.iswaiting = false;
 								data = eval('('+data+')');
-								_this.j_data.dan -= 10;
-								_this.j_data.di += 1;
-								_this.show_msg(1,'你已永久拥有一块养鸡的地！');
-								_this.set_ji_di('di');
+								if (data) {
+									_this.j_data.dan -= 10;
+									_this.j_data.di += 1;
+									_this.show_msg(1,'你已永久拥有一块养鸡的地！');
+									_this.set_ji_di('di');
+								}
+								
+								
 							},
 							error: function (){
 								_this.iswaiting = false;
