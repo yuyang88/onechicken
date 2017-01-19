@@ -41,7 +41,7 @@ new Vue({
 	mounted: function (){
 		var _this = this;
 		ajax({
-			url: "/api/info",
+			url: "http://h5.91marryu.com/onechicken/index.php/api/info",
 			data: {
 				"userid": userid
 			},
@@ -146,7 +146,7 @@ new Vue({
 			if (j.no_get_eggs>0) {
 				_this.iswaiting = true;
 				ajax({
-					url: "api/pickup_eggs",
+					url: "http://h5.91marryu.com/onechicken/index.php/api/pickup_eggs",
 					data: {
 						"userid": userid,
 						"chicken_id": j.id,
@@ -185,7 +185,7 @@ new Vue({
 						if (this.j_data.dan >= 100) {
 							_this.iswaiting = true;
 							ajax({
-								url: "/api/egg2chicken",
+								url: "http://h5.91marryu.com/onechicken/index.php/api/egg2chicken",
 								data: {
 									"userid": userid
 								},
@@ -216,7 +216,7 @@ new Vue({
 					if (this.j_data.dan >= 10) {
 						_this.iswaiting = true;
 						ajax({
-							url: "/api/enable_soil",
+							url: "http://h5.91marryu.com/onechicken/index.php/api/enable_soil",
 							data: {
 								"userid": userid
 							},
@@ -279,7 +279,7 @@ new Vue({
 				}else if (window.confirm('充值'+this.c_money+'元？')) {
 					_this.iswaiting = true;
 					ajax({
-						url: "/api/pay",
+						url: "http://h5.91marryu.com/onechicken/index.php/api/pay",
 						data: {
 							"userid": userid,
 							"money": this.c_money
@@ -324,7 +324,7 @@ new Vue({
 				}
 				_this.iswaiting = true;
 				ajax({
-					url: "/api/tixian",
+					url: "http://h5.91marryu.com/onechicken/index.php/api/tixian",
 					data: {
 						"userid": userid,
 						"name": this.tx_name,
