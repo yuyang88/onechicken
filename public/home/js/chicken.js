@@ -54,11 +54,11 @@ new Vue({
 
 				var j_data = {
 					ji: 0,
-					dan: data.eggs,
+					dan: data.eggs-0,
 					di: 0,
 					die_ji: 0,
-					friend: data.recommand_eggs,
-					all_money: data.money
+					friend: data.recommand_eggs-0,
+					all_money: data.money-0
 				};
 				var tian = [];
 				for (var i = 0; i < data.soil_list.length; i++) {
@@ -193,7 +193,9 @@ new Vue({
 								success: function (data){
 									_this.iswaiting = false;
 									data = eval('('+data+')');
-									if (data) {
+									if (data.status=="false"||data.status==false) {
+										_this.show_msg(0,data.msg);
+									}else{
 										_this.j_data.dan -= 100;
 										_this.j_data.ji += 1;
 										_this.show_msg(1,'你已拥有一只超生产力的母鸡！');
@@ -224,7 +226,9 @@ new Vue({
 							success: function (data){
 								_this.iswaiting = false;
 								data = eval('('+data+')');
-								if (data) {
+								if (data.status=="false"||data.status==false) {
+									_this.show_msg(0,data.msg);
+								}else{
 									_this.j_data.dan -= 10;
 									_this.j_data.di += 1;
 									_this.show_msg(1,'你已永久拥有一块养鸡的地！');
@@ -278,8 +282,11 @@ new Vue({
 					this.show_msg(0,'最少充值10元');
 				}else if (window.confirm('充值'+this.c_money+'元？')) {
 					_this.iswaiting = true;
-					ajax({
-						url: "http://h5.91marryu.com/onechicken/index.php/api/pay",
+					
+					window.location.href = "http://h5.91marryu.com/onechicken/index.php/api/pay?userid="+userid+"&money="+this.c_money;
+
+					/*ajax({
+						url: "",
 						data: {
 							"userid": userid,
 							"money": this.c_money
@@ -299,7 +306,7 @@ new Vue({
 						error: function (){
 							_this.iswaiting = false;
 						}
-					});
+					});*/
 				}
 			}else if(item == 2){
 				this.is_tx = true;
@@ -334,7 +341,10 @@ new Vue({
 					type: "post",
 					success: function (data){
 						_this.iswaiting = false;
-						if (data) {
+						data = eval('('+data+')');
+						if (data.status=="false" || data.status==false) {
+							_this.show_msg(0,data.msg);
+						}else{
 							_this.show_msg(1,'提现'+_this.t_money+'元成功，请等待客服处理');
 							_this.j_data.dan -= _this.t_money;
 							_this.j_data.all_money += _this.t_money;
