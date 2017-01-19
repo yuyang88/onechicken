@@ -238,6 +238,8 @@ class Api extends MY_Controller {
         $create_time = time();
         $sql = " INSERT INTO extract (`name`,`brank_num`,`money`,`wu_id`,`create_time`) VALUES ( $name,$brank_num,$money,$wu_id,$create_time)";
         $info = $this->topup_model->addExtract($sql);
+        $sql1 = "update user_addition set total_eggs = total_eggs-".$money." where user_id = ".$wu_id;
+        $this->topup_model->addExtract($sql1);
         if($info)
             $this->send_data(true);
 
