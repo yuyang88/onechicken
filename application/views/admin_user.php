@@ -77,8 +77,8 @@
                 <li class="">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown">后台管理 <span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="http://h5.91marryu.com//onechicken/index.php/admin/show">用户信息</a></li>
-                        <li><a href="http://h5.91marryu.com//onechicken/index.php/admin/show">提现管理</a></li>
+                        <li><a href="http://h5.91marryu.com/onechicken/index.php/admin/show">用户信息</a></li>
+                        <li><a href="http://h5.91marryu.com/onechicken/index.php/admin/tixian">提现管理</a></li>
                     </ul>
                 </li>
             </ul>
@@ -90,7 +90,7 @@
                         <!--<li><a href="#">上次登录时间：</a></li>--->
                         <li class="divider"></li>
                         <!--<li><a href="/dashboard/system/updateAdminPwd.html">修改我的密码</a></li>-->
-                        <li><a href="http://h5.91marryu.com//onechicken/index.php/admin/logout">退出登录</a></li>
+                        <li><a href="http://h5.91marryu.com/onechicken/index.php/admin/logout">退出登录</a></li>
                     </ul>
                 </li>
             </ul>
@@ -190,12 +190,12 @@
     <div class="container-fluid text-center">
     </div>
 
-    <script src="http://h5.91marryu.com//onechicken/public/public/Js/html5shiv.js"></script>
-    <script type="text/javascript" src="http://h5.91marryu.com//onechicken/public/public/Js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="http://h5.91marryu.com//onechicken/public/public/Js/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="http://h5.91marryu.com//onechicken/public/public/Js/admin.js"></script>
-    <script type="text/javascript" src="http://h5.91marryu.com//onechicken/public/public/Js/jquery-ui-timepicker-addon.js"></script>
-    <script type="text/javascript" src="http://h5.91marryu.com//onechicken/public/public/Js/jquery.ui.datepicker-zh-CN.js.js" charset="gb2312" ></script>
-    <script type="text/javascript" src="http://h5.91marryu.com//onechicken/public/public/Js/jquery-ui-timepicker-zh-CN.js"></script>
+    <script src="http://h5.91marryu.com/onechicken/public/public/Js/html5shiv.js"></script>
+    <script type="text/javascript" src="http://h5.91marryu.com/onechicken/public/public/Js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://h5.91marryu.com/onechicken/public/public/Js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="http://h5.91marryu.com/onechicken/public/public/Js/admin.js"></script>
+    <script type="text/javascript" src="http://h5.91marryu.com/onechicken/public/public/Js/jquery-ui-timepicker-addon.js"></script>
+    <script type="text/javascript" src="http://h5.91marryu.com/onechicken/public/public/Js/jquery.ui.datepicker-zh-CN.js.js" charset="gb2312" ></script>
+    <script type="text/javascript" src="http://h5.91marryu.com/onechicken/public/public/Js/jquery-ui-timepicker-zh-CN.js"></script>
 </body>
 </html>

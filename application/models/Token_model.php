@@ -57,15 +57,21 @@ class token_model extends CI_Model
             'parent_id'=>$parent_id,
         ];
 
-        $info = $this->db->query("select * from chicken_wechat_user where wechat_id = ?",[$userInfo['openid']])->row_array();
+				$info = $this->db->query("select * from chicken_wechat_user where wechat_id = ?",[$userInfo['openid']])->row_array();
         if($info)
             return $info;
 
+
         $this->db->insert('chicken_wechat_user',$saveData);
+
         usleep(50000);
-        $parentInfo = $this->db->query("select * from chicken_wechat_user where id = ?",[$parent_id])->row_array();
+
+        $info = $this->db->query("select * from chicken_wechat_user where wechat_id = ?",[$userInfo['openid']])->row_array();
+        
+        $parentInfo = $this->db->query("select * from chicken_wechat_user where id = ?",[$info['id']])->row_array();
 
         $this->writeResult($parentInfo['id'],$parentInfo['parent_id'],$parentInfo['recommand_code']);
+
 
 
 
@@ -89,9 +95,11 @@ class token_model extends CI_Model
     public function writeResult($userId,$parentId = 0,$recommand_code = '')
     {
         $save['user_id'] = $userId;
+        $save1['enabled'] = 1;
+        $save1['user_id'] = $userId;
+        $this->db->insert('soil',$save1);
 
         $saveS = [
-            $save,
             $save,
             $save,
             $save,
@@ -105,6 +113,7 @@ class token_model extends CI_Model
         $this->db->insert_batch('soil',$saveS);
         $save['recommand'] = $parentId;
         $save['recommand_code'] = $recommand_code;
+        $save['soils'] = 1;
         $this->db->insert('user_addition',$save);
     }
     public function getWuId($wechat_id)

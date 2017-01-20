@@ -63,18 +63,34 @@ class wechat extends CI_Controller
     }
 
 
-    public function game()
+   public function game()
     {
         if($_GET['user_id'])
             setcookie('user_id',$_GET['user_id'],time()+8640000);
 
+        if($_GET['user_id']){
+            $userId = $_GET['user_id'];
+        }elseif ($_COOKIE['user_id']){
+            $userId = $_COOKIE['user_id'];
+        }elseif ($_SESSION['user_id'])
+        {
+            $userId = $_SESSION['user_id'];
+        }else{
+            header("Location:http://h5.91marryu.com/onechicken/index.php/wechat/getcode");
+            exit;
+        }
         $this->load->model('token_model');
         $this->load->model('topup_model');
-        $wuinfo = $this->topup_model->querySql("select * from chicken_wechat_user WHERE id = ".$_COOKIE['user_id']);
+        $wuinfo = $this->topup_model->querySql("select * from chicken_wechat_user WHERE id = ".$userId);
 //        $this->token_model->getWeChatSignature();
         $data = $this->token_model->setToken();
-        $data['user'] = $wuinfo[0];
-        $this->load->view('chicken',$data);
+        $user = $wuinfo[0];
+        unset($data['id']);
+        unset($user['create_time']);
+        $info = array_merge($user,$data);
+        $info['link'] = "http://h5.91marryu.com/onechicken/index.php/wechat/getcode/?recommand_code=".$info['recommand_code'];
+        $info['appId'] = "wx193e672203c8c855";
+        $this->load->view('chicken',$info);
     }
 
 

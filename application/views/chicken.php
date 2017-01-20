@@ -120,21 +120,22 @@
 <script type="text/javascript" src="http://h5.91marryu.com//onechicken/public/home/js/vue.js"></script>
 <script type="text/javascript" src="http://h5.91marryu.com//onechicken/public/home/js/ajax.js"></script>
 
+
 <script type="text/javascript">
     var shareData = {
         title: document.title, // 分享标题
         desc: '', // 分享描述
-        link: window.location.href,// 分享链接
+        link: "<?php echo $link;?>",// 分享链接
         imgUrl: '', // 分享图标
         success: function () {},
         cancel: function () {}
     };
     wx.config({
         debug: false,
-        appId: "",
-        timestamp: "",
+        appId: "<?php echo $appId;?>",
+        timestamp: "<?php echo $create_time;?>",
         nonceStr: "",
-        signature: "",
+        signature: "<?php echo $signature;?>",
         jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage','onMenuShareQQ','onMenuShareWeibo']
     });
     wx.ready(function(){

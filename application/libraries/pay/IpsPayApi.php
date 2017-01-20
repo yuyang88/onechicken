@@ -47,13 +47,13 @@ $ServerUrl = $_REQUEST['ServerUrl'];
 //超时时间
 $BillExp = date('Y-m-d H:i:s',strtotime('+1 hour'));
 //收货人地址
-$ReachAddress = '瞬时发货';
+$ReachAddress = ' ';
 //买家留言
-$Attach = '瞬时发货';
+$Attach = '金蛋';
 //订单签名方式(156 md5)
 $RetEncodeType = 156;
 //收货人姓名
-$ReachBy= '充值人员';
+$ReachBy= '微信用户';
 
 /************************************************************/
 
