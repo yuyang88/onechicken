@@ -260,6 +260,8 @@ class Api extends MY_Controller {
      * 每天0.00运行的任务
      */
     public function dayjob(){
+        ignore_user_abort(true);
+        set_time_limit(0);
         $this->user_model->product_eggs();
     }
 
