@@ -1,5 +1,7 @@
-function json2url(json){
-	json.t=Math.random();
+function json2url(json,ist){
+	if (!ist) {
+		json.t=Math.random();
+	}
 	var arr=[];
 	for(var name in json){
 		arr.push(name+'='+json[name]);
@@ -17,7 +19,7 @@ function ajax(json){
 	json.data=json.data || {};
 	json.timeout=json.timeout || 10;
 	json.dataType=json.dataType || 'json';
-	
+
 	if(window.XMLHttpRequest){
 		var oAjax=new XMLHttpRequest();
 	}else{
@@ -26,13 +28,13 @@ function ajax(json){
 	
 	switch(json.type.toLowerCase()){
 		case 'get':
-			oAjax.open('GET',json.url+'?'+json2url(json.data),true);
+			oAjax.open('GET',json.url+'?'+json2url(json.data,json.ist),true);
 			oAjax.send();
 			break;
 		case 'post':
 			oAjax.open('POST',json.url,true);
 			oAjax.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-			oAjax.send(json2url(json.data));
+			oAjax.send(json2url(json.data,json.ist));
 			break;
 	}
 	
