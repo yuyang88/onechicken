@@ -5,10 +5,8 @@
  */
 
 var userid = getCookie("user_id") || getCookie("userid");
-var qian = getUrlData("qian");
-
 if (!userid) {
-	window.location.reload();
+	window.reload();
 }
 
 new Vue({
@@ -19,7 +17,6 @@ new Vue({
 		t_money: '',
 		tx_name: '',
 		tx_card: '',
-		tx_tel: '',
 		is_tx: false,
 		t_timer: null, 	// 弹窗时间控制器
 		a_message: { 	// 弹窗
@@ -34,6 +31,7 @@ new Vue({
 			ji: 0,
 			dan: 0,
 			di: 1,
+			die_ji: 0,
 			friend: 0,
 			all_money: 0
 		},
@@ -43,7 +41,7 @@ new Vue({
 	mounted: function (){
 		var _this = this;
 		ajax({
-			url: "http://h5.91marryu.com/onechicken/index.php/api/info",
+			url: "/api/info",
 			data: {
 				"userid": userid
 			},
@@ -53,31 +51,37 @@ new Vue({
 				message = eval('('+message+')');
 				var data = message.data;
 
-				if (qian) {
-					_this.show_msg(1,'充值'+qian+'元成功');
-					setTimeout(function(){
-						_this.a_message.isClose = true;
-						_this.$nextTick(function (){
-							_this.show_msg(1,'您已获得'+qian+'只鸡蛋');
-						});
-						
-					},2000);
-				}
-				
 
 				var j_data = {
-					ji: data.chickens-0,
-					dan: data.total_eggs-0-data.recommand_eggs,
-					di: data.soils-0,
-					friend: data.recommand_eggs-0,
-					all_money: data.money-0
+					ji: 0,
+					dan: data.eggs,
+					di: 0,
+					die_ji: 0,
+					friend: data.recommand_eggs,
+					all_money: data.money
 				};
 				var tian = [];
 				for (var i = 0; i < data.soil_list.length; i++) {
 					var d = data.soil_list[i].enabled=="1";
 					var a = data.soil_list[i].henroost_a;
 					var b = data.soil_list[i].henroost_b;
-					var c = data.soil_list[i].chickens || [];
+					var c = data.soil_list[i].chickens;
+					if (a && a!=null && a!='null') {
+						j_data.ji++
+					}
+					if (b && b!=null && b!='null') {
+						j_data.ji++
+					}
+					for(var j=0;j<c.length;j++){
+						if(c[j].is_dead && c[j].is_dead != "0"){
+							j_data.die_ji++;
+							c.splice(i,1);
+							i--;
+						}
+					}
+					if (d) {
+						j_data.di++;
+					}
 
 					tian[i] = {
 						"enabled": d,
@@ -92,13 +96,21 @@ new Vue({
 				_this.tian = tian;
 				_this.recommand_list = data.recommand_list.slice(0,8);
 				
-				
+				var s_time = 0;
 				if (_this.j_data.friend > 0) {
 					_this.show_msg(1,'通过你的小伙伴分享，你已获得了'+_this.j_data.friend+'个蛋。');
 					_this.j_data.dan += _this.j_data.friend;
 					_this.j_data.friend = 0;
+					s_time = 2000;
 				}
+
+				if (_this.j_data.die_ji > 0) {
+					setTimeout(function (){
+						_this.show_msg(2,'很遗憾，你的鸡已不会生蛋了，将告别你。');
+						_this.j_data.ji -= _this.j_data.die_ji;
+					},s_time);
 					
+				}
 			},
 			error: function (){
 				_this.iswaiting = false;
@@ -134,7 +146,7 @@ new Vue({
 			if (j.no_get_eggs>0) {
 				_this.iswaiting = true;
 				ajax({
-					url: "http://h5.91marryu.com/onechicken/index.php/api/pickup_eggs",
+					url: "api/pickup_eggs",
 					data: {
 						"userid": userid,
 						"chicken_id": j.id,
@@ -144,19 +156,9 @@ new Vue({
 					success: function(data){
 						_this.iswaiting = false;
 						data = eval('('+data+')');
-						if (data.status=="false" || data.status==false){
-							_this.tian[index].chickens[index2].no_get_eggs = 0;
-						} else {
+						if (data) {
 							_this.j_data.dan += 5;
 							_this.tian[index].chickens[index2].no_get_eggs = 0;
-							
-							if (j.is_dead=="1" || j.is_dead=="2") {
-								_this.show_msg(0,'很遗憾，你的鸡已不会生蛋了，将告别你。');
-								setTimeout(function (){
-									window.location.reload();
-								},2000);
-							}
-							
 						}
 					},
 					error: function (){
@@ -183,7 +185,7 @@ new Vue({
 						if (this.j_data.dan >= 100) {
 							_this.iswaiting = true;
 							ajax({
-								url: "http://h5.91marryu.com/onechicken/index.php/api/egg2chicken",
+								url: "/api/egg2chicken",
 								data: {
 									"userid": userid
 								},
@@ -191,9 +193,7 @@ new Vue({
 								success: function (data){
 									_this.iswaiting = false;
 									data = eval('('+data+')');
-									if (data.status=="false"||data.status==false) {
-										_this.show_msg(0,data.msg);
-									}else{
+									if (data) {
 										_this.j_data.dan -= 100;
 										_this.j_data.ji += 1;
 										_this.show_msg(1,'你已拥有一只超生产力的母鸡！');
@@ -216,7 +216,7 @@ new Vue({
 					if (this.j_data.dan >= 10) {
 						_this.iswaiting = true;
 						ajax({
-							url: "http://h5.91marryu.com/onechicken/index.php/api/enable_soil",
+							url: "/api/enable_soil",
 							data: {
 								"userid": userid
 							},
@@ -224,9 +224,7 @@ new Vue({
 							success: function (data){
 								_this.iswaiting = false;
 								data = eval('('+data+')');
-								if (data.status=="false"||data.status==false) {
-									_this.show_msg(0,data.msg);
-								}else{
+								if (data) {
 									_this.j_data.dan -= 10;
 									_this.j_data.di += 1;
 									_this.show_msg(1,'你已永久拥有一块养鸡的地！');
@@ -280,9 +278,28 @@ new Vue({
 					this.show_msg(0,'最少充值10元');
 				}else if (window.confirm('充值'+this.c_money+'元？')) {
 					_this.iswaiting = true;
-					
-					window.location.href = "http://h5.91marryu.com/onechicken/index.php/api/pay?userid="+userid+"&money="+this.c_money;
-
+					ajax({
+						url: "/api/pay",
+						data: {
+							"userid": userid,
+							"money": this.c_money
+						},
+						type: "post",
+						success: function (data){
+							_this.iswaiting = false;
+							if(data){
+								_this.show_msg(1,'充值'+_this.c_money+'元成功');
+								_this.j_data.dan += _this.c_money;
+								setTimeout(function(){
+									_this.show_msg(1,'您已获得'+_this.c_money+'只鸡蛋');
+								},2000);
+							}
+							
+						},
+						error: function (){
+							_this.iswaiting = false;
+						}
+					});
 				}
 			}else if(item == 2){
 				this.is_tx = true;
@@ -301,43 +318,26 @@ new Vue({
 			}else{
 				if (!this.tx_name) {
 					this.show_msg(0,'请填写姓名');
-					return ;
-				}
-				if (!/^1[3-9]\d{9}$/.test(this.tx_tel)) {
-					this.show_msg(0,'请填写正确的手机号码');
-					return ;
 				}
 				if (!/^\d{8,24}$/.test(this.tx_card)) {
 					this.show_msg(0,'请填写正确的银行卡号');
-					return ;
 				}
 				_this.iswaiting = true;
 				ajax({
-					url: "http://h5.91marryu.com/onechicken/index.php/api/tixian",
+					url: "/api/tixian",
 					data: {
 						"userid": userid,
 						"name": this.tx_name,
 						"money": this.t_money,
-						"phone": this.tx_tel,
 						"brank_num": this.tx_card
 					},
 					type: "post",
 					success: function (data){
 						_this.iswaiting = false;
-						data = eval('('+data+')');
-						if (data.status=="false" || data.status==false) {
-							_this.show_msg(0,data.msg);
-						}else{
+						if (data) {
 							_this.show_msg(1,'提现'+_this.t_money+'元成功，请等待客服处理');
 							_this.j_data.dan -= _this.t_money;
 							_this.j_data.all_money += _this.t_money;
-
-							_this.$nextTick(function (){
-								_this.t_money = "";
-								_this.tx_name = "";
-								_this.tx_tel = "";
-								_this.tx_card = "";
-							});
 						}
 					},
 					error: function (){
@@ -357,27 +357,4 @@ function getCookie(e)
 		if(a[0]==e)return unescape(a[1])
 	}
 	return ""
-}
-
-function getLocationSearch(url){
-    if (!!url) {
-        var search = url.substring(url.indexOf('?'));
-    }else{
-        var search = window.location.search || '?';
-    }
-    var arr1 = search.substring(1).split('&');
-    var json = {};
-    for (var i = 0; i < arr1.length; i++) {
-        var arr2 = arr1[i].split('=');
-        if (!json[arr2[0]]) {
-            json[arr2[0]] = arr2[1];
-        }
-    }
-    return json
-}
-
-function getUrlData(name){
-    var json = getLocationSearch();
-    var str = json[name] || '';
-    return str
 }
