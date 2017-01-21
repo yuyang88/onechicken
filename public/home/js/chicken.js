@@ -303,7 +303,7 @@ new Vue({
 					this.show_msg(0,'请填写姓名');
 					return ;
 				}
-				if (!/^1[3-9]\d{9}$/this.tx_tel) {
+				if (!/^1[3-9]\d{9}$/.test(this.tx_tel)) {
 					this.show_msg(0,'请填写正确的手机号码');
 					return ;
 				}
