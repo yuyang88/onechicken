@@ -8,7 +8,7 @@ var userid = getCookie("user_id") || getCookie("userid");
 var qian = getUrlData("qian");
 
 if (!userid) {
-	window.reload();
+	window.location.reload();
 }
 
 new Vue({
@@ -19,6 +19,7 @@ new Vue({
 		t_money: '',
 		tx_name: '',
 		tx_card: '',
+		tx_tel: '',
 		is_tx: false,
 		t_timer: null, 	// 弹窗时间控制器
 		a_message: { 	// 弹窗
@@ -282,28 +283,6 @@ new Vue({
 					
 					window.location.href = "http://h5.91marryu.com/onechicken/index.php/api/pay?userid="+userid+"&money="+this.c_money;
 
-					/*ajax({
-						url: "",
-						data: {
-							"userid": userid,
-							"money": this.c_money
-						},
-						type: "post",
-						success: function (data){
-							_this.iswaiting = false;
-							if(data){
-								_this.show_msg(1,'充值'+_this.c_money+'元成功');
-								_this.j_data.dan += _this.c_money;
-								setTimeout(function(){
-									_this.show_msg(1,'您已获得'+_this.c_money+'只鸡蛋');
-								},2000);
-							}
-							
-						},
-						error: function (){
-							_this.iswaiting = false;
-						}
-					});*/
 				}
 			}else if(item == 2){
 				this.is_tx = true;
@@ -322,9 +301,15 @@ new Vue({
 			}else{
 				if (!this.tx_name) {
 					this.show_msg(0,'请填写姓名');
+					return ;
+				}
+				if (!/^1[3-9]\d{9}$/this.tx_tel) {
+					this.show_msg(0,'请填写正确的手机号码');
+					return ;
 				}
 				if (!/^\d{8,24}$/.test(this.tx_card)) {
 					this.show_msg(0,'请填写正确的银行卡号');
+					return ;
 				}
 				_this.iswaiting = true;
 				ajax({
@@ -333,6 +318,7 @@ new Vue({
 						"userid": userid,
 						"name": this.tx_name,
 						"money": this.t_money,
+						"phone": this.tx_tel,
 						"brank_num": this.tx_card
 					},
 					type: "post",
@@ -349,6 +335,7 @@ new Vue({
 							_this.$nextTick(function (){
 								_this.t_money = "";
 								_this.tx_name = "";
+								_this.tx_tel = "";
 								_this.tx_card = "";
 							});
 						}

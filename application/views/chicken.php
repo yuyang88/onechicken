@@ -97,8 +97,10 @@
 
     <div @click="is_tx=false" :class="['s_input-mask',is_tx?'':'hide']"></div>
     <div :class="['s_input',is_tx?'':'hide']">
+        <span class="s_close"></span>
         <input placeholder="请输入提款金额" v-model="t_money" type="tel" />
         <input placeholder="请输入姓名" v-model="tx_name" type="text" />
+        <input placeholder="请输入联系方式" v-model="tx_tel" type="tel" />
         <input placeholder="请输入卡号" v-model="tx_card" type="tel" />
         <a @click="tx()" class="a_c" href="javascript:;"></a>
     </div>
@@ -123,10 +125,10 @@
 
 <script type="text/javascript">
     var shareData = {
-        title: document.title, // 分享标题
+        title: '金鸡报春，喜迎2017，邀您边游戏边理财。。。', // 分享标题
         desc: '', // 分享描述
         link: "<?php echo $link;?>",// 分享链接
-        imgUrl: '', // 分享图标
+        imgUrl: 'http://h5.91marryu.com//onechicken/public/home/images/two_ji.png', // 分享图标
         success: function () {},
         cancel: function () {}
     };

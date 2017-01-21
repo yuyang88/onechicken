@@ -618,9 +618,9 @@ transform:scale(1.02)}
 	top: 50%;
 	left: 50%;
 	width: 4.49rem;
-	height: 3.38rem;
+	height: 4.05rem;
 	margin-left: -2.25rem;
-	margin-top: -1.69rem;
+	margin-top: -2.03rem;
 	padding-top: 0.7rem;
 	background: url(http://h5.91marryu.com/onechicken/public/home/images/input_bg.png) no-repeat;
 	background-size: 100% 100%;
@@ -652,6 +652,17 @@ transform:scale(1.02)}
 	background: url(http://h5.91marryu.com/onechicken/public/home/images/s_input_btn.png) no-repeat;
 	background-size: 100%;
 }
+.s_close{
+	position: absolute;
+	left: 50%;
+	top: -0.11rem;
+	margin-left: -0.33rem;
+	width: 0.66rem;
+	height: 0.66rem;
+	background: url(http://h5.91marryu.com/onechicken/public/home/images/addclose.png) no-repeat;
+	background-size: 100% 100%;
+}
+
 /* 加载中 start*/
 @-webkit-keyframes rotate-forever {
   0% {
