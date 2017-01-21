@@ -78,8 +78,8 @@ $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => '127.0.0.1',
 	'username' => 'root',
-	'password' => 'root',
-	'database' => 'test',
+	'password' => 'lenovocw123',
+	'database' => 'onechicken',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -94,5 +94,5 @@ $db['default'] = array(
 	'stricton' => FALSE,
 	'failover' => array(),
 	'save_queries' => TRUE,
-    'port'=>'3306'
+    'port'=>'3336'
 );

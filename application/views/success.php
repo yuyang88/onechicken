@@ -15,7 +15,7 @@
         var interval = setInterval(function(){
             var time = --wait.innerHTML;
             if(time <= 1) {
-                location.href = "http://h5.91marryu.com//onechicken/index.php/admin/tixian/";
+                location.href = "http://h5.91marryu.com/onechicken/index.php/admin/tixian/";
                 clearInterval(interval);
             };
         }, 1000);

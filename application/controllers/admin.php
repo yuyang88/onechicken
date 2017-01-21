@@ -8,7 +8,7 @@ class admin extends CI_Controller {
     private $_cookieUserName = 'email';
     private $_cookieTime = 8640000;
 
-    private $_pageNum = 2;
+    private $_pageNum = 20;
     /**
      * Index Page for this controller.
      *

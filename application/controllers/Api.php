@@ -98,17 +98,19 @@ class Api extends MY_Controller {
         $this->load->model('topup_model');
         $this->load->model('token_model');
         $this->load->library("pay");
-        /*用户地址*/
-        $memLink = "http://h5.91marryu.com/onechicken/index.php/wechat/game";
-        /*服务器通知地址*/
-        $serLink = "http://h5.91marryu.com/onechicken/index.php/api/payCall";
         /*金额*/
-        $money = $_POST['money']?$_POST['money']:'0.02';
+        $money = $_REQUEST['money']?$_REQUEST['money']:'0.02';
         /*订单号*/
         $data['order_num'] = $order= 'Mer' . date('Ymdhis').rand(1,99999);
         /*微信用户id*/
-        $data['wu_id'] = $wu_id = $_POST['userid'];
+        $data['wu_id'] = $wu_id = $_REQUEST['userid'];
         $data['create_time'] = time();
+        
+        /*用户地址*/
+        $memLink = "http://h5.91marryu.com/onechicken/index.php/wechat/game?qian=".$money;
+        /*服务器通知地址*/
+        $serLink = "http://h5.91marryu.com/onechicken/index.php/api/payCall";
+        
 
         /*写入支付记录*/
         $this->db->insert('top_up',$data);
@@ -245,6 +247,14 @@ class Api extends MY_Controller {
         $brank_num = $_POST['brank_num'];
         $money = $_POST['money'];
         $wu_id = $_POST['userid'];
+
+
+        if($wu_id) {
+            $totalEggs = $this->db->query('select * from user_addition WHERE user_id = ?', $_POST['userid'])->row_array();
+            if($totalEggs['total_eggs'] < $money)
+                $this->send_data(false,[],'失败');
+        }
+        
         $create_time = time();
         $sql = " INSERT INTO extract (`name`,`brank_num`,`money`,`wu_id`,`create_time`) VALUES ( $name,$brank_num,$money,$wu_id,$create_time)";
         $info = $this->topup_model->addExtract($sql);
