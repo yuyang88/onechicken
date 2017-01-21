@@ -5,7 +5,7 @@
  */
 
 var userid = getCookie("user_id") || getCookie("userid");
-var qian = getUrlData("qian");
+var qian = window.location.hash;
 
 if (!userid) {
 	window.location.reload();
@@ -53,12 +53,14 @@ new Vue({
 				message = eval('('+message+')');
 				var data = message.data;
 
-				if (qian) {
-					_this.show_msg(1,'充值'+qian+'元成功');
+				if (/^#qian\=[\d\.]+$/.test(qian)) {
+					var qq = qian.substr(6);
+					_this.show_msg(1,'充值'+qq+'元成功');
+					window.location.hash = "";
 					setTimeout(function(){
 						_this.a_message.isClose = true;
 						_this.$nextTick(function (){
-							_this.show_msg(1,'您已获得'+qian+'只鸡蛋');
+							_this.show_msg(1,'您已获得'+qq+'只鸡蛋');
 						});
 						
 					},2000);
